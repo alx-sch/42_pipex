@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/07 13:04:51 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/07 20:04:04 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,22 @@ static int	open_file(char *file, int access_mode)
 // close read end of pipe as not needed
 // replace stdin fd with infile_fd
 // redirect stdout fd with write end of pipe
-// void	child_process(char *argv[], char *env[], int *pipe_fd)
-// {
-// 	int	infile_fd;
+void	child_process(char **argv, char **env, const int *pipe_fd)
+{
+	int	infile_fd;
 
-// 	infile_fd = open_file(argv[1], READ_MODE);
-// 	if (infile_fd == -1)
-// 		perror_and_exit("open");
-// 	if (close(p_fd[0]) == -1)
-// 		perror_and_exit("close");
-// 	if (dup2(infile_fd, STDIN_FILENO) == -1)
-// 		perror_and_exit("dup2");
-// 	execute(argv[2], env);
-// }
+	(void)env;
+	infile_fd = open_file(argv[1], READ_MODE);
+	if (infile_fd == -1)
+		perror_and_exit("open");
+	if (close(pipe_fd[0]) == -1)
+		perror_and_exit("close");
+	if (dup2(infile_fd, STDIN_FILENO) == -1)
+		perror_and_exit("dup2");
+	if (close(infile_fd) == -1)
+		perror_and_exit("dup2");
+	//execute(argv[2], env);
+}
 
 // void	parent_process(char *argv[], char *env[], int *pipe_fd)
 // {

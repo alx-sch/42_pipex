@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:45:47 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/07 13:04:35 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/07 20:18:15 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include "libft/libft.h"
 
 // process.c
-void	child_process(char *argv[], char *env[], int *pipe_fd);
+void	child_process(char *argv[], char *env[], const int *pipe_fd);
 
 // utils.c
-//void	perror_and_exit(char *message);
+void	msg_and_exit(const char *msg);
+void	perror_and_exit(const char *message);
 
 //	+++++++++++++
 //	++ PROGRAM ++
@@ -25,18 +26,15 @@ void	child_process(char *argv[], char *env[], int *pipe_fd);
 
 // child takes care of the left half of pipe (read)
 // parent takes care of the right half of pipe (write)
-int	main(int argc, char *argv[], char *env[])
+int	main(int argc, char **argv, char **env)
 {
 	int		pipe_fd[2];
 	int		process_id;
-	char	*cat_args[3];
-	char	*grep_args[3];
+	//char	*cat_args[3];
+	//char	*grep_args[3];
 
 	if (argc != 5)
-	{
-		ft_putstr_fd("ERROR: ./pipex file1 cmd1 cmd2 file2\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
+		msg_and_exit("Invalid no. of args: ./pipex file1 cmd1 cmd2 file2\n");
 	if (pipe(pipe_fd) == -1)
 		perror_and_exit("pipex");
 	process_id = fork();
@@ -44,7 +42,7 @@ int	main(int argc, char *argv[], char *env[])
 		perror_and_exit("fork");
 	if (process_id == 0)
 		child_process(argv, env, pipe_fd);
-	parent_process(argv, env, pipe_fd);
+	//parent_process(argv, env, pipe_fd);
 	return (0);
 }
 
