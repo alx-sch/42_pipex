@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:45:47 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/06 20:17:16 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/07 13:04:35 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@
 void	child_process(char *argv[], char *env[], int *pipe_fd);
 
 // utils.c
-void	perror_and_exit(char *message)
+//void	perror_and_exit(char *message);
 
 //	+++++++++++++
 //	++ PROGRAM ++
 //	+++++++++++++
 
+// child takes care of the left half of pipe (read)
+// parent takes care of the right half of pipe (write)
 int	main(int argc, char *argv[], char *env[])
 {
 	int		pipe_fd[2];
@@ -36,15 +38,16 @@ int	main(int argc, char *argv[], char *env[])
 		exit(EXIT_FAILURE);
 	}
 	if (pipe(pipe_fd) == -1)
-		perror_and_exit("Pipe failure");
+		perror_and_exit("pipex");
 	process_id = fork();
 	if (process_id == -1)
-		perror_and_exit("Fork failure");
+		perror_and_exit("fork");
 	if (process_id == 0)
 		child_process(argv, env, pipe_fd);
-	parent();
+	parent_process(argv, env, pipe_fd);
 	return (0);
 }
+
 
 
 // 	(void) argc;
