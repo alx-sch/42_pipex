@@ -6,15 +6,24 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/07 20:04:04 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/10 21:23:41 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "libft/libft.h"
 
+// FILE
+void	child_process(char **argv, char **env, const int *pipe_fd);
+void	handle_child_termination(int process_status);
+
+// call_cmd.c
+void	call_cmd(char *cmd, char *env[]);
+
 // utils.c
-void	perror_and_exit(char *message);
+void	msg_and_exit(char *msg);
+void	errno_and_exit(const char *pre, const char *post);
+void	free_arr(char **array);
 
 // libft
 char	**ft_split(const char *s, char c);
@@ -26,45 +35,13 @@ static int	open_file(char *file, int access_mode)
 {
 	int	_return;
 
+	_return = -1;
 	if (access_mode == READ_MODE)
 		_return = open(file, O_RDONLY);
 	else if (access_mode == WRITE_MODE)
 		_return = open(file, O_WRONLY | O_TRUNC | O_CREAT, 0777);
-	else
-	{
-		ft_putstr_fd("ERROR: Invalid access mode\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
 	return (_return);
 }
-
-// char	*get_cmd_path(char *cmd, char **env)
-// {
-// 	int		i;
-// 	char	*exec;
-// 	char	*allpath[];
-// 	char	*path_part;
-// 	char	*s_cmd[];
-
-// 	i = -1;
-// 	allpath = ft_split(my_getenv("PATH", env), ':');
-// 	s_cmd = ft_split(cmd, ' ');
-// 	while (allpath[++i])
-// 	{
-// 		path_part = ft_strjoin(allpath[i], "/");
-// 		exec = ft_strjoin(path_part, s_cmd[0]);
-// 		free(path_part);
-// 		if (access(exec, F_OK | X_OK) == 0)
-// 		{
-// 			ft_free_tab(s_cmd);
-// 			return (exec);
-// 		}
-// 		free(exec);
-// 	}
-// 	ft_free_tab(allpath);
-// 	ft_free_tab(s_cmd);
-// 	return (cmd);
-// }
 
 // void	execute(char *cmd, char *env[])
 // {
@@ -76,8 +53,8 @@ static int	open_file(char *file, int access_mode)
 // 	if (execve(path, cmd_args, env) == -1)
 // 	{
 // 		ft_putstr_fd("pipex: command not found: ", 2);
-// 		ft_putendl_fd(s_cmd[0], 2);
-// 		ft_free_tab(s_cmd);
+// 		ft_putendl_fd(cmd_tokens[0], 2);
+// 		ft_free_tab(cmd_tokens);
 // 		exit(0);
 // 	}
 // }
@@ -85,21 +62,40 @@ static int	open_file(char *file, int access_mode)
 // close read end of pipe as not needed
 // replace stdin fd with infile_fd
 // redirect stdout fd with write end of pipe
+// erro as reason can vary (does not exist, permission denied)
 void	child_process(char **argv, char **env, const int *pipe_fd)
 {
 	int	infile_fd;
 
-	(void)env;
 	infile_fd = open_file(argv[1], READ_MODE);
 	if (infile_fd == -1)
-		perror_and_exit("open");
-	if (close(pipe_fd[0]) == -1)
-		perror_and_exit("close");
-	if (dup2(infile_fd, STDIN_FILENO) == -1)
-		perror_and_exit("dup2");
-	if (close(infile_fd) == -1)
-		perror_and_exit("dup2");
-	//execute(argv[2], env);
+	{
+		ft_putstr_fd("pipex: ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(argv[1], STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+		//errno_and_exit("pipex: ", argv[1]);
+	close(pipe_fd[0]);
+	dup2(infile_fd, STDIN_FILENO);
+	close(infile_fd);
+	call_cmd(argv[2], env);
+}
+
+void	handle_child_termination(int process_status)
+{
+	if (WIFEXITED(process_status))
+	{
+		if (WEXITSTATUS(process_status) == EXIT_FAILURE)
+			exit(EXIT_FAILURE);
+	}
+	else
+	{
+		ft_putstr_fd("Child process terminated abnormally\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 }
 
 // void	parent_process(char *argv[], char *env[], int *pipe_fd)

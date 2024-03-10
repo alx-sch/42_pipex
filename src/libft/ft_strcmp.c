@@ -6,12 +6,12 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:41:14 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/07 19:47:48 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/09 19:01:04 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-Like the strncmp() function, but compares entire stringths, no need to pass
+Like the strncmp() function, but compares entire strings, no need to pass
 a size.
 -	If the two strings are identical, the function returns 0, indicating
 	no difference.

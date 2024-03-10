@@ -1,5 +1,7 @@
-This is a test
-Another line
-Another line with test
-and the END!
-Lausanne is here!
+TEST i line
+Here is Lausanne
+abba
+
+BUT ALSO HERE: Lausanne
+LAUSANNE as well
+EOD

@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:45:47 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/07 20:18:15 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/10 20:36:29 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 #include "libft/libft.h"
 
 // process.c
-void	child_process(char *argv[], char *env[], const int *pipe_fd);
+int		child_process(char *argv[], char *env[], const int *pipe_ends);
 
 // utils.c
-void	msg_and_exit(const char *msg);
-void	perror_and_exit(const char *message);
+void	msg_and_exit(char *msg);
+void	errno_and_exit(const char *pre, const char *post);
+void	handle_child_termination(int process_status);
+
+// libft
+
+char	*get_cmd_path(char *cmd, char **env);
 
 //	+++++++++++++
 //	++ PROGRAM ++
@@ -28,22 +33,25 @@ void	perror_and_exit(const char *message);
 // parent takes care of the right half of pipe (write)
 int	main(int argc, char **argv, char **env)
 {
-	int		pipe_fd[2];
-	int		process_id;
-	//char	*cat_args[3];
-	//char	*grep_args[3];
+	int		pipe_ends[2];
+	pid_t	process_id;
+	int		process_status;
 
 	if (argc != 5)
-		msg_and_exit("Invalid no. of args: ./pipex file1 cmd1 cmd2 file2\n");
-	if (pipe(pipe_fd) == -1)
-		perror_and_exit("pipex");
+	{
+		ft_putstr_fd("Usage: ./pipex file1 cmd1 cmd2 file2\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	pipe(pipe_ends);
 	process_id = fork();
-	if (process_id == -1)
-		perror_and_exit("fork");
 	if (process_id == 0)
-		child_process(argv, env, pipe_fd);
-	//parent_process(argv, env, pipe_fd);
-	return (0);
+		child_process(argv, env, pipe_ends);
+	else
+	{
+		waitpid(process_id, &process_status, 0);
+		handle_child_termination(process_status);
+		//parent_process()
+	}
 }
 
 
@@ -57,7 +65,7 @@ int	main(int argc, char **argv, char **env)
 // 	grep_args[1] = "Lausanne";
 // 	grep_args[2] = NULL;
 
-// 	if (pipe(pipe_fd) == -1)
+// 	if (pipe(pipe_ends) == -1)
 // 	{
 // 		perror("pipe");
 // 		exit(EXIT_FAILURE);
@@ -70,18 +78,18 @@ int	main(int argc, char **argv, char **env)
 // 	}
 // 	else if (p_id ==0)
 // 	{
-// 		close(pipe_fd[1]);
-// 		dup2(pipe_fd[0], STDIN_FILENO);
+// 		close(pipe_ends[1]);
+// 		dup2(pipe_ends[0], STDIN_FILENO);
 // 		execve("/bin/grep", grep_args, env);
 // 	}
 // 	else
 // 	{
-// 		close(pipe_fd[0]);
-// 		dup2(pipe_fd[1], STDOUT_FILENO);
+// 		close(pipe_ends[0]);
+// 		dup2(pipe_ends[1], STDOUT_FILENO);
 // 		execve("/bin/cat", cat_args, env);
 // 	}
-// 	close(pipe_fd[0]);
-// 	close(pipe_fd[1]);
+// 	close(pipe_ends[0]);
+// 	close(pipe_ends[1]);
 // 	waitpid(p_id, NULL, 0);
 // 	return (0);
 // }

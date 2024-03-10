@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:43:13 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/07 12:53:42 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/10 19:25:50 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,25 @@
 # include <stdio.h> // perror
 # include <string.h> // strerror
 # include <sys/wait.h> // wait, waitpid
+# include <errno.h> // errno
 
 // Macros for open_file()
 # define READ_MODE 0
 # define WRITE_MODE 1
+
+typedef struct s_pipex
+{
+	int		infile;
+	int		outfile;
+	int		tube[2];
+	int		pid1;
+	int		pid2;
+	char	**command;
+	char	*command_path;
+	char	**splitted_path;
+	char	*env_path;
+}	t_pipex;
+
 
 //	+++++++++++++
 //	++ PROGRAM ++
