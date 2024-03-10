@@ -1,7 +1,0 @@
-TEST i line
-Here is Lausanne
-abba
-
-BUT ALSO HERE: Lausanne
-LAUSANNE as well
-EOD

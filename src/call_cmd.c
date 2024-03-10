@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 00:39:57 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/10 21:01:51 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/10 22:28:57 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,34 @@
 #include "libft/libft.h"
 
 // FILE
-void	call_cmd(char *cmd, char *env[]);
-
-// utils.c
-//char	*add_newline(const char *str);
-void	free_arr(char **array);
-void	errno_and_exit(const char *pre, const char *post);
+void	call_cmd(char *cmd, char **env);
 
 // libft
+char	*ft_substr(const char *s, unsigned int start, size_t len);
+int		ft_strcmp(const char *s1, const char *s2);
+char	**ft_split(const char *s, char c);
+char	*ft_strjoin(const char *s1, const char *s2);
 void	ft_putstr_fd(char *s, int fd);
+
+//	+++++++++++++++
+//	++ FUNCTIONS ++
+//	+++++++++++++++
+
+// helper fct
+static void	free_arr(char **array)
+{
+	size_t	i;
+
+	i = 0;
+	if (!array)
+		return ;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
 
 // // get variable name in substring (all before '=') (env_var)
 // // returns everything behind '=', the vlaue of env var

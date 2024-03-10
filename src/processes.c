@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/10 21:23:41 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/10 22:30:31 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,15 @@
 #include "libft/libft.h"
 
 // FILE
-void	child_process(char **argv, char **env, const int *pipe_fd);
+void	child_process(char **argv, char **env, const int *pipe_ends);
+void	parent_process(char **argv, char **env, const int *pipe_ends);
 void	handle_child_termination(int process_status);
 
 // call_cmd.c
 void	call_cmd(char *cmd, char *env[]);
 
-// utils.c
-void	msg_and_exit(char *msg);
-void	errno_and_exit(const char *pre, const char *post);
-void	free_arr(char **array);
-
 // libft
-char	**ft_split(const char *s, char c);
+void	ft_putstr_fd(char *s, int fd);
 
 // 0: inout
 // 1: output
@@ -43,27 +39,11 @@ static int	open_file(char *file, int access_mode)
 	return (_return);
 }
 
-// void	execute(char *cmd, char *env[])
-// {
-// 	char	*cmd_args[];
-// 	char	*cmd_path;
-
-// 	cmd_args = ft_split(cmd, ' ');
-// 	cmd_path = get_cmd_path(cmd_args[0], env);
-// 	if (execve(path, cmd_args, env) == -1)
-// 	{
-// 		ft_putstr_fd("pipex: command not found: ", 2);
-// 		ft_putendl_fd(cmd_tokens[0], 2);
-// 		ft_free_tab(cmd_tokens);
-// 		exit(0);
-// 	}
-// }
-
 // close read end of pipe as not needed
 // replace stdin fd with infile_fd
 // redirect stdout fd with write end of pipe
 // erro as reason can vary (does not exist, permission denied)
-void	child_process(char **argv, char **env, const int *pipe_fd)
+void	child_process(char **argv, char **env, const int *pipe_ends)
 {
 	int	infile_fd;
 
@@ -77,11 +57,32 @@ void	child_process(char **argv, char **env, const int *pipe_fd)
 		ft_putstr_fd("\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-		//errno_and_exit("pipex: ", argv[1]);
-	close(pipe_fd[0]);
+	close(pipe_ends[0]);
 	dup2(infile_fd, STDIN_FILENO);
 	close(infile_fd);
+	dup2(pipe_ends[1], STDOUT_FILENO);
 	call_cmd(argv[2], env);
+}
+
+void	parent_process(char **argv, char **env, const int *pipe_ends)
+{
+	int	outfile_fd;
+
+	outfile_fd = open_file(argv[4], WRITE_MODE);
+	if (outfile_fd == -1)
+	{
+		ft_putstr_fd("pipex: ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(argv[4], STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	close(pipe_ends[1]);
+	dup2(outfile_fd, STDOUT_FILENO);
+	close(outfile_fd);
+	dup2(pipe_ends[0], STDIN_FILENO);
+	call_cmd(argv[3], env);
 }
 
 void	handle_child_termination(int process_status)
@@ -97,17 +98,3 @@ void	handle_child_termination(int process_status)
 		exit(EXIT_FAILURE);
 	}
 }
-
-// void	parent_process(char *argv[], char *env[], int *pipe_fd)
-// {
-// 	int	outfile_fd;
-
-// 	outfile_fd = open_file(argv[4], WRITE_MODE);
-// 	if (outfile_fd == -1)
-// 		perror_and_exit("open");
-// 	if (close(p_fd[1]) == -1)
-// 		perror_and_exit("close");
-// 	if (dup2(outfile_fd, STDOUT_FILENO) == -1)
-// 		perror_and_exit("dup2");
-// 	execute(argv[3], env);
-// }
