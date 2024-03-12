@@ -47,7 +47,8 @@ Using Z Shell (zsh).
 
 Comparison (output shell + output pipex):
 
-- invalid input of left side:
+#### Invalid Input of left side
+- single invalid input:
 	- infile not existent
  	- infile no access
   	- invalid command
@@ -55,6 +56,11 @@ Comparison (output shell + output pipex):
 
 	![Screenshot from 2024-03-12 13-35-28](https://github.com/alx-sch/42_pipex/assets/134595144/aad56d51-8ba1-43ff-a25d-b82fd7d2575b)
 
-	- Note that the color-coded output signals 'success' (blue)! -> left side is handled in a separate progress (and EXIT status is not considered in parent).
+	- Note: The color-coded output signals 'success' (blue)! -> left side is handled in a separate progress (and EXIT status is not considered in parent).
 
+- single invalid input:
+	- infile not existent & invalid command   
+	![left_pipe_d](https://github.com/alx-sch/42_pipex/assets/134595144/f2a96f25-2599-474d-999f-0c0834367185)
+
+	- Note: Only the file-related issue is addressed, not the invalid command.
 
