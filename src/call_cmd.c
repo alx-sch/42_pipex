@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 00:39:57 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/10 22:28:57 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:16:57 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 // FILE
 void	call_cmd(char *cmd, char **env);
+
+// utils.c
+void	perror_and_exit(char *msg);
 
 // libft
 char	*ft_substr(const char *s, unsigned int start, size_t len);
@@ -27,7 +30,7 @@ void	ft_putstr_fd(char *s, int fd);
 //	++ FUNCTIONS ++
 //	+++++++++++++++
 
-// helper fct
+// Frees the memory allocated for an array of strings.
 static void	free_arr(char **array)
 {
 	size_t	i;
@@ -43,11 +46,11 @@ static void	free_arr(char **array)
 	free(array);
 }
 
-// // get variable name in substring (all before '=') (env_var)
-// // returns everything behind '=', the vlaue of env var
-// looking for env var "PATH", value: list of directories where OS looks
-// for executables when command is typed into command line interface;
-// each directory separated by colon (:) on UNIX-like systems
+// Extracts the value of a specified environment variable ('env_var_search')
+// from the given environment variable array ('env').
+// This function is used in 'get_cmd_path' to retrieve the value of 'PATH',
+// containing a list of directories where the system searches for executables
+// when commands are entered into the CLI.
 static char	*get_env_values(const char *env_var_search, char **env)
 {
 	size_t	i;
@@ -62,7 +65,7 @@ static char	*get_env_values(const char *env_var_search, char **env)
 			len++;
 		env_var = ft_substr(env[i], 0, len);
 		if (!env_var)
-			exit(EXIT_FAILURE);
+			perror_and_exit("malloc");
 		if (ft_strcmp(env_var, env_var_search) == 0)
 		{
 			free(env_var);
@@ -74,42 +77,52 @@ static char	*get_env_values(const char *env_var_search, char **env)
 	return (NULL);
 }
 
-// returns system path of command executable (first apparence in PATH env var)
-static char	*get_cmd_path(char *cmd, char **env)
+// Retrieves the system path of the specified command executable ('cmd_name'),
+// which is the first occurrence found in the directories listed in the "PATH"
+// environment variable (found in 'env').
+// It utilizes the get_env_values() to obtain the list of directories
+// specified in the "PATH" variable and searches through each directory until
+// the command executable is found.
+static char	*get_cmd_path(char *cmd_name, char **env)
 {
 	size_t	i;
 	char	**directories;
-	char	**cmd_tokens;
-	char	*temp;
 	char	*cmd_path;
 
-	i = -1;
+	i = 0;
 	directories = ft_split(get_env_values("PATH", env), ':');
-	cmd_tokens = ft_split(cmd, ' ');
-	while (directories[++i])
+	if (!directories)
+		perror_and_exit("malloc");
+	while (directories[i])
 	{
-		temp = ft_strjoin(directories[i], "/");
-		cmd_path = ft_strjoin(temp, cmd_tokens[0]);
-		free(temp);
+		cmd_path = ft_strjoin(ft_strjoin(directories[i], "/"), cmd_name);
+		if (!cmd_path)
+			perror_and_exit("malloc");
 		if (access(cmd_path, F_OK | X_OK) == 0)
 		{
 			free_arr(directories);
-			free_arr(cmd_tokens);
 			return (cmd_path);
 		}
 		free(cmd_path);
+		i++;
 	}
 	free_arr(directories);
-	free_arr(cmd_tokens);
 	return (NULL);
 }
 
+// Executes the specified command ('cmd') along with its arguments, using the
+// execve() system call. Before execution, it retrieves the full path to the
+// command executable using get_cmd_path(). If the command is not
+// found or if execution fails, an appropriate error message is displayed,
+// and the program exits with a failure status.
 void	call_cmd(char *cmd, char *env[])
 {
 	char	**cmd_args;
 	char	*cmd_path;
 
 	cmd_args = ft_split(cmd, ' ');
+	if (!cmd_args)
+		perror_and_exit("malloc");
 	cmd_path = get_cmd_path(cmd_args[0], env);
 	if (!cmd_path)
 	{
@@ -123,8 +136,6 @@ void	call_cmd(char *cmd, char *env[])
 	{
 		free(cmd_path);
 		free_arr(cmd_args);
-		exit(EXIT_FAILURE);
+		perror_and_exit("execve");
 	}
-	free(cmd_path);
-	free_arr(cmd_args);
 }

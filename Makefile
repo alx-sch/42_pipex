@@ -6,7 +6,7 @@
 #    By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 19:39:15 by aschenk           #+#    #+#              #
-#    Updated: 2024/03/05 19:05:25 by aschenk          ###   ########.fr        #
+#    Updated: 2024/03/12 12:37:46 by aschenk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@ NAME =		pipex
 
 SRCS :=		$(wildcard src/*.c)
 OBJS :=		$(SRCS:src/%.c=obj/%.o)
-HDRS := 	$(wildcard include/*.h)
+HDRS := 	$(wildcard incl/*.h)
 
 LIBFT_DIR =	src/libft
 LIBFT =		obj/libft/libft.a
 
 CC =		cc
-CFLAGS =	-Wall -Wextra -Werror -Iinclude
+CFLAGS =	-Wall -Wextra -Werror -Iincl
 LIBS = 		-Lobj/libft -lft
 
 TOTAL_SRCS := $(words $(SRCS))
@@ -43,7 +43,7 @@ $(NAME):	$(OBJS) $(LIBFT)
 
 # Rule to define how to generate object files (%.o) from corresponding
 # source files (%.c). Each .o file depends on the associated .c file and the
-# push_swap header file (include/push_swap.h)
+# project header file (incl/project.h)
 # -c:		Generates o. files without linking.
 # -o $@:	Output file name;  '$@' is replaced with target name (the o. file).
 # -$<:		Represents the first prerequisite (the c. file).
