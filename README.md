@@ -77,5 +77,5 @@ Comparison (output shell + output pipex):
 ![first_no_waitpid_second_w_waitpid](https://github.com/alx-sch/42_pipex/assets/134595144/ca798d7e-d7b8-45f2-9d71-a2fc1d0fd0b8)
 
 #### Same file as input and output
-- Let's say you want to count the words in a file and store the results in another, but use the same file as input and output `< infile.txt wc -c | cat > infile.txt`, the result would be file with '0' in it -> The 'outfile' is created first as an empty file (overwriting the actual 'infile') and THEN process are initiated.
+- Let's say you want to count the words in a file and store the results in another, but use the same file as input and output `< infile.txt wc -w | cat > infile.txt`, the result would be file with '0' in it -> The 'outfile' is created first as an empty file (overwriting the actual 'infile') and THEN process are initiated.
 
