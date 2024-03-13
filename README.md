@@ -59,8 +59,10 @@ Comparison (output shell + output pipex):
    ![Screenshot from 2024-03-12 15-40-20](https://github.com/alx-sch/42_pipex/assets/134595144/cd8219f5-eb17-4cf0-a390-9588adde7a93)
 
 	- Note: The color-coded output signals 'success' (blue)! -> left side is handled in a process that does NOT report the EXIT status to the parten.
- 	- Note: An empty outfile.txt is created.
   	- Note: If multiple invalid comments: Only the file-related issue is addressed, not the invalid command -> process exits after file access fails.
+  	- Note: An empty outfile.txt is created ('rw-r--r-- permissions) even if the pipe call failed.
+  	  ![outfile_permissions](https://github.com/alx-sch/42_pipex/assets/134595144/386f81f0-0936-4c86-b032-94bab157d839)
+
  
 #### Invalid Input on Right Side   
 - Same as above for the left side BUT color-coded output signals 'error' (red) -> right side is handled in a process that reports EXIT status to partent.    
