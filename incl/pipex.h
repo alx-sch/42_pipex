@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:43:13 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/13 13:07:23 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/13 22:49:58 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int		main(int argc, char *argv[], char *env[]);
 //	+++++++++++++++
 
 // pipeline.c
-void	pipeline_left(char **argv, char **env, const int *pipe_ends);
-void	pipeline_right(char **argv, char **env, const int *pipe_ends);
+void	pipeline_left(char **argv, char **env, int *pipe_ends);
+void	pipeline_right(char **argv, char **env, int *pipe_ends);
 
 // call_cmd.c
 void	call_cmd(char *cmd, char **env);
 
 // utils.c
-void	perror_and_exit(char *msg);
+void	perror_and_exit(char *msg, int *pipe_ends);
 
 #endif

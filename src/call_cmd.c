@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 00:39:57 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/13 12:40:16 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/13 21:50:23 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	call_cmd(char *cmd, char **env);
 
 // utils.c
-void	perror_and_exit(char *msg);
+void	perror_and_exit(char *msg, int *pipe_ends);
 
 // libft
 char	*ft_substr(const char *s, unsigned int start, size_t len);
@@ -67,7 +67,7 @@ static char	*get_env_values(const char *env_var_search, char **env)
 			len++;
 		env_var = ft_substr(env[i], 0, len);
 		if (!env_var)
-			perror_and_exit("malloc");
+			perror_and_exit("malloc", NULL);
 		if (ft_strcmp(env_var, env_var_search) == 0)
 		{
 			free(env_var);
@@ -88,11 +88,11 @@ static char	*construct_cmd_path(const char *directory, const char *cmd_name)
 
 	temp = ft_strjoin(directory, "/");
 	if (!temp)
-		perror_and_exit("malloc");
+		perror_and_exit("malloc", NULL);
 	cmd_path = ft_strjoin(temp, cmd_name);
 	free(temp);
 	if (!cmd_path)
-		perror_and_exit("malloc");
+		perror_and_exit("malloc", NULL);
 	return (cmd_path);
 }
 
@@ -108,7 +108,7 @@ static char	*get_cmd_path(char *cmd_name, char **env)
 	i = 0;
 	directories = ft_split(get_env_values("PATH", env), ':');
 	if (!directories)
-		perror_and_exit("malloc");
+		perror_and_exit("malloc", NULL);
 	while (directories[i])
 	{
 		cmd_path = construct_cmd_path(directories[i], cmd_name);
@@ -136,7 +136,7 @@ void	call_cmd(char *cmd, char *env[])
 
 	cmd_args = ft_split(cmd, ' ');
 	if (!cmd_args)
-		perror_and_exit("malloc");
+		perror_and_exit("malloc", NULL);
 	cmd_path = get_cmd_path(cmd_args[0], env);
 	if (!cmd_path)
 	{
@@ -150,6 +150,6 @@ void	call_cmd(char *cmd, char *env[])
 	{
 		free(cmd_path);
 		free_arr(cmd_args);
-		perror_and_exit("execve");
+		perror_and_exit("execve", NULL);
 	}
 }
