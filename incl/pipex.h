@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 19:43:13 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/12 16:32:49 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/13 12:42:44 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <stdlib.h> // malloc, free, exit, access, dup2, execv
 # include <fcntl.h> // open
-# include <unistd.h> // fork, pipe, macros like STDERR_FILENO
+# include <unistd.h> // fork, pipe, macros like 'STDERR_FILENO'
 # include <stdio.h> // perror
 # include <string.h> // strerror
 # include <errno.h> // errno
@@ -25,11 +25,21 @@
 //	++ PROGRAM ++
 //	+++++++++++++
 
-// pipex.c
-int	main(int argc, char *argv[], char *env[]);
+// main.c
+int		main(int argc, char *argv[], char *env[]);
 
 //	+++++++++++++++
 //	++ FUNCTIONS ++
 //	+++++++++++++++
+
+// pipeline.c
+void	pipeline_left(char **argv, char **env, const int *pipe_ends);
+void	pipeline_right(char **argv, char **env, const int *pipe_ends);
+
+// call_cmd.c
+void	call_cmd(char *cmd, char **env);
+
+// utils.c
+void	perror_and_exit(char *msg);
 
 #endif

@@ -6,9 +6,11 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 00:39:57 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/12 17:16:57 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/13 12:40:16 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// This file implements a function to execute a specified command.
 
 #include "pipex.h"
 #include "libft/libft.h"
@@ -77,12 +79,26 @@ static char	*get_env_values(const char *env_var_search, char **env)
 	return (NULL);
 }
 
+// Constructs the path to a command executable by concatenating the specified
+// directory path and command name.
+static char	*construct_cmd_path(const char *directory, const char *cmd_name)
+{
+	char	*temp;
+	char	*cmd_path;
+
+	temp = ft_strjoin(directory, "/");
+	if (!temp)
+		perror_and_exit("malloc");
+	cmd_path = ft_strjoin(temp, cmd_name);
+	free(temp);
+	if (!cmd_path)
+		perror_and_exit("malloc");
+	return (cmd_path);
+}
+
 // Retrieves the system path of the specified command executable ('cmd_name'),
 // which is the first occurrence found in the directories listed in the "PATH"
 // environment variable (found in 'env').
-// It utilizes the get_env_values() to obtain the list of directories
-// specified in the "PATH" variable and searches through each directory until
-// the command executable is found.
 static char	*get_cmd_path(char *cmd_name, char **env)
 {
 	size_t	i;
@@ -95,9 +111,7 @@ static char	*get_cmd_path(char *cmd_name, char **env)
 		perror_and_exit("malloc");
 	while (directories[i])
 	{
-		cmd_path = ft_strjoin(ft_strjoin(directories[i], "/"), cmd_name);
-		if (!cmd_path)
-			perror_and_exit("malloc");
+		cmd_path = construct_cmd_path(directories[i], cmd_name);
 		if (access(cmd_path, F_OK | X_OK) == 0)
 		{
 			free_arr(directories);

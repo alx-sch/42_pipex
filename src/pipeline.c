@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   processes.c                                        :+:      :+:    :+:   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/12 17:24:18 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/13 12:41:00 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// This file contains the implementation of two functions, responsible for
+// executing the left and right side of the pipeline.
 
 #include "pipex.h"
 #include "libft/libft.h"
 
 // FILE
-void	child_process(char **argv, char **env, const int *pipe_ends);
-void	parent_process(char **argv, char **env, const int *pipe_ends);
+void	pipeline_left(char **argv, char **env, const int *pipe_ends);
+void	pipeline_right(char **argv, char **env, const int *pipe_ends);
 
 // call_cmd.c
 void	call_cmd(char *cmd, char *env[]);
@@ -30,11 +33,16 @@ void	ft_putstr_fd(char *s, int fd);
 //	++ FUNCTIONS ++
 //	+++++++++++++++
 
-// close read end of pipe as not needed
-// replace stdin fd with infile_fd
-// redirect stdout fd with write end of pipe
-// erro as reason can vary (does not exist, permission denied)
-void	child_process(char **argv, char **env, const int *pipe_ends)
+// Executes the left side of the process (in the child process).
+// - Opens the input file ('infile') specified by the first CL argument.
+// - Closes the unused read end of the pipe.
+// - Redirects standard input to read from the input file ('< infile' in CL).
+// - Redirects standard output to write to the write end of the pipe,
+//   which will serve as the input for the right side of the pipeline.
+// - Executes the command (second CL argument) using 'call_cmd'/'execve'.
+// - The child process terminates automatically after the command execution,
+//	 either due to success or failure of execve().
+void	pipeline_left(char **argv, char **env, const int *pipe_ends)
 {
 	int	infile_fd;
 
@@ -61,8 +69,16 @@ void	child_process(char **argv, char **env, const int *pipe_ends)
 	call_cmd(argv[2], env);
 }
 
-/// PARENT
-void	parent_process(char **argv, char **env, const int *pipe_ends)
+// Executes the right side of the process (in the parent process).
+// - Opens the output file ('outfile') specified by the fourth CL argument.
+// - Closes the unused write end of the pipe.
+// - Redirects standard input to read from the read end of the pipe,
+//   which receives input from the previous process in the pipeline.
+// - Redirects standard output to write to the output file ('> outfile' in CL).
+// - Executes the command (third CL argument) using 'call_cmd'/'execve'.
+// - The parent process terminates automatically after the command execution,
+//	 either due to success or failure of execve().
+void	pipeline_right(char **argv, char **env, const int *pipe_ends)
 {
 	int	outfile_fd;
 
