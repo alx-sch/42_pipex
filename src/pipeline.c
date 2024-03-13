@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/13 12:41:00 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:05:53 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	pipeline_left(char **argv, char **env, const int *pipe_ends)
 
 // Executes the right side of the process (in the parent process).
 // - Opens the output file ('outfile') specified by the fourth CL argument.
+// 	 If the outfile does not exist, it creates it with 'rw-r--r--' permissions.
 // - Closes the unused write end of the pipe.
 // - Redirects standard input to read from the read end of the pipe,
 //   which receives input from the previous process in the pipeline.
@@ -82,7 +83,7 @@ void	pipeline_right(char **argv, char **env, const int *pipe_ends)
 {
 	int	outfile_fd;
 
-	outfile_fd = open(argv[4], O_WRONLY | O_TRUNC);
+	outfile_fd = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (outfile_fd == -1)
 	{
 		ft_putstr_fd("pipex: ", STDERR_FILENO);
