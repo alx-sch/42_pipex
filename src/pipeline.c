@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/13 22:49:28 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/14 21:33:07 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,44 @@ void	perror_and_exit(char *msg, int *pipe_ends);
 
 // libft
 void	ft_putstr_fd(char *s, int fd);
+char	*ft_strdup(const char *src);
+int		ft_tolower(int c);
 
 //	+++++++++++++++
 //	++ FUNCTIONS ++
 //	+++++++++++++++
+
+// Converts a string to lowercase.
+static void	str_tolower(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		str[i] = ft_tolower(str[i]);
+		i++;
+	}
+}
+
+// Prints an error message related to file operations, e.g. open().
+// Makes sure that the message obtained from strerror(errno) is all lowercase
+// to imitate the shell's behavior (zsh).
+static void	print_file_err_msg(char *pre, char *file, int *pipe_ends)
+{
+	char	*errno_message;
+
+	errno_message = ft_strdup(strerror(errno));
+	if (!errno_message)
+		perror_and_exit("malloc", pipe_ends);
+	str_tolower(errno_message);
+	ft_putstr_fd(pre, STDERR_FILENO);
+	ft_putstr_fd(errno_message, STDERR_FILENO);
+	free(errno_message);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
 
 // Executes the left side of the process (in the child process).
 // - Opens the input file ('infile') specified by the first CL argument.
@@ -44,18 +78,14 @@ void	ft_putstr_fd(char *s, int fd);
 //	 either due to success or failure of execve().
 void	pipeline_left(char **argv, char **env, int *pipe_ends)
 {
-	int	infile_fd;
+	int		infile_fd;
 
 	if (close(pipe_ends[0]) == -1)
 		perror_and_exit("close", pipe_ends);
 	infile_fd = open(argv[1], O_RDONLY);
 	if (infile_fd == -1)
 	{
-		ft_putstr_fd("pipex: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(argv[1], STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
+		print_file_err_msg("pipex: ", argv[1], pipe_ends);
 		if (close(pipe_ends[1]) == -1)
 			perror_and_exit("close", pipe_ends);
 		exit(EXIT_FAILURE);
@@ -90,22 +120,33 @@ void	pipeline_right(char **argv, char **env, int *pipe_ends)
 	outfile_fd = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (outfile_fd == -1)
 	{
-		ft_putstr_fd("pipex: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(argv[4], STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
+		print_file_err_msg("pipex: ", argv[4], pipe_ends);
 		if (close(pipe_ends[0]) == -1)
 			perror_and_exit("close", pipe_ends);
 		exit(EXIT_FAILURE);
 	}
-	if (dup2(outfile_fd, STDOUT_FILENO) == -1)
-		perror_and_exit("dup2", pipe_ends);
-	if (close(outfile_fd) == -1)
-		perror_and_exit("close", pipe_ends);
 	if (dup2(pipe_ends[0], STDIN_FILENO) == -1)
 		perror_and_exit("dup2", pipe_ends);
 	if (close(pipe_ends[0]) == -1)
 		perror_and_exit("close", pipe_ends);
+	if (dup2(outfile_fd, STDOUT_FILENO) == -1)
+		perror_and_exit("dup2", pipe_ends);
+	if (close(outfile_fd) == -1)
+		perror_and_exit("close", pipe_ends);
 	call_cmd(argv[3], env);
+}
+
+// Waits for the child process to finish and forwards the exit status
+// to the parent.
+void	parent_process(int process_id, int *pipe_ends)
+{
+	int	child_status;
+
+	close(pipe_ends[0]);
+	close(pipe_ends[1]);
+	waitpid(process_id, &child_status, 0);
+	if (WIFEXITED(child_status) && WEXITSTATUS(child_status) != EXIT_SUCCESS)
+		exit(EXIT_FAILURE);
+	else
+		exit(EXIT_SUCCESS);
 }

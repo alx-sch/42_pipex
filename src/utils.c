@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:26:03 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/13 22:35:49 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/14 12:27:34 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	perror_and_exit(char *msg, int *pipe_ends);
 //	++ FUNCTIONS ++
 //	+++++++++++++++
 
-// Displays an error message using perror() and exits with failure as status.
+// Displays an error message using perror(), closes the pipe (if provided),
+// and exits with failure status.
 void	perror_and_exit(char *msg, int *pipe_ends)
 {
 	perror(msg);
