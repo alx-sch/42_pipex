@@ -53,31 +53,45 @@ Comparison (output shell + output pipex):
  	- infile no access
   	- invalid command
   	- invalid command option
-  	- infile not existent & invalid command    	
+  	- infile not existent & invalid command
+    	
+	![Screenshot from 2024-03-15 11-58-13](https://github.com/alx-sch/42_pipex/assets/134595144/adc7bef6-7b0e-43c0-81de-69c66dac90ce)
 
-  ![left_pipe](https://github.com/alx-sch/42_pipex/assets/134595144/b64c8772-8e1c-4acd-9d68-8450d86f0934)
-   ![Screenshot from 2024-03-12 15-40-20](https://github.com/alx-sch/42_pipex/assets/134595144/cd8219f5-eb17-4cf0-a390-9588adde7a93)
+   
 
 	- Note: The color-coded output signals 'success' (blue)! -> left side is handled in a process that does NOT report the EXIT status to the parten.
   	- Note: If multiple invalid comments: Only the file-related issue is addressed, not the invalid command -> process exits after file access fails.
-  	- Note: An empty outfile.txt is created ('rw-r--r-- permissions) even if the pipe call failed.
-  	  ![outfile_permissions](https://github.com/alx-sch/42_pipex/assets/134595144/386f81f0-0936-4c86-b032-94bab157d839)
+  	- Note: An empty outfile.txt is created ('rw-r--r-- permissions) even if the pipe call failed. 
+	![Screenshot from 2024-03-15 12-05-14](https://github.com/alx-sch/42_pipex/assets/134595144/55bae8f7-b962-491f-86bc-416e8d88535f)
 
  
 #### Invalid Input on Right Side   
 - Same as above for the left side BUT color-coded output signals 'error' (red) -> right side is handled in a process that reports EXIT status to partent.    
-	-![right_pipe](https://github.com/alx-sch/42_pipex/assets/134595144/831aabca-d00b-4afe-97f6-25865f59fe61)    
+	![Screenshot from 2024-03-15 12-14-40](https://github.com/alx-sch/42_pipex/assets/134595144/e65c2b17-c7b5-4b8e-a6fa-527e6a63d1f2)
+
 
 #### Invalid Input on Both Sides
 - Same as above, error messages for both sides are printed out -> processes handling each side run paralelly; having one exit does not result in the other process not being executed.
-  ![double](https://github.com/alx-sch/42_pipex/assets/134595144/569798fb-55fe-4a8b-9073-52d10bc36ea3)
+  ![Screenshot from 2024-03-18 13-21-44](https://github.com/alx-sch/42_pipex/assets/134595144/247f9656-74f2-46f5-bec9-a8850e817081)
 
-#### Right process waits for the left one 
-- The first pipex call does not incl a waitpid for the 'left process' before the 'right process' starts
-- The second pipex call incl. a waitpid for the 'left process' before the 'right process' starts
-- -> An upstream process waits for the downstream one to finish.
-![first_no_waitpid_second_w_waitpid](https://github.com/alx-sch/42_pipex/assets/134595144/ca798d7e-d7b8-45f2-9d71-a2fc1d0fd0b8)
+
+#### Proccesses run parallely
+- no sleep    
+![Screenshot from 2024-03-18 13-29-56](https://github.com/alx-sch/42_pipex/assets/134595144/00dcb8e8-cb5a-44d9-b1f6-7801c37f1e86)
+
+
+- wait 10 microseconds before calling pipeline_right()   
+![Screenshot from 2024-03-18 13-30-24](https://github.com/alx-sch/42_pipex/assets/134595144/b9dfb567-bf1b-4aaa-ac21-41fbf940a3af)
+
+- wait 100 microseconds before calling pipeline_right()
+  ![Screenshot from 2024-03-18 13-31-15](https://github.com/alx-sch/42_pipex/assets/134595144/a5b59adb-5453-47d7-9da3-adfddb79aaef)
+
+
+  
 
 #### Same file as input and output
 - Let's say you want to count the words in a file and store the results in another, but use the same file as input and output `< infile.txt wc -w | cat > infile.txt`, the result would be file with '0' in it -> The 'outfile' is created first as an empty file (overwriting the actual 'infile') and THEN process are initiated.
+
+#### Parent waits for the last process to finish
+- `< infile.txt | head > outfile.txt` `./pipex infile.txt yes head outfile.txt ` 
 
