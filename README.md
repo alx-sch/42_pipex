@@ -4,12 +4,13 @@
     <img src="https://github.com/alx-sch/42_pipex/assets/134595144/292c30ab-c530-4977-b4ec-863d889eca6b" alt="born2beroot_badge.png" />
 </p>
 
-OVERVIEW PROJECT
+Pipex mimics the functionality of the shell pipe command. Executing `./pipex infile cmd1 cmd2 outfile` emulates the behavior of `< infile cmd1 | cmd2 > outfile`.
 
 ## Features
-- **XXX:** XX
-- **XXX:** XX
-- **XXX:** XX
+- **Process Management:** Parent child processes inter-process communication via a pipe using  `pipe()` & `fork()`.
+- **Command Execution:** PATH environmental variable and execve()
+- **Protecting and Error Handling:** XX
+- **Imitating Shell Behavior:** XX
 
 ## Environmental Variables
 
