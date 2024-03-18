@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:45:47 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/14 21:38:16 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/18 12:54:19 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	check_args(int argc)
 //	++ PROGRAM ++
 //	+++++++++++++
 
-
 // Manages the creation of a pipeline, forking processes, and executing
 // commands within the pipeline. Each half of the pipeline (left + right)
 // is handled by a child process, while the parent process ensures to
@@ -52,25 +51,25 @@ static void	check_args(int argc)
 int	main(int argc, char **argv, char **env)
 {
 	int		pipe_ends[2];
-	pid_t	process_id_1;
-	pid_t	process_id_2;
+	pid_t	pipeline_left_id;
+	pid_t	pipeline_right_id;
 
 	check_args(argc);
 	if (pipe(pipe_ends) == -1)
 		perror_and_exit("pipe", NULL);
-	process_id_1 = fork();
-	if (process_id_1 == -1)
+	pipeline_right_id = fork();
+	if (pipeline_right_id == -1)
 		perror_and_exit("fork", pipe_ends);
-	if (process_id_1 == 0)
+	if (pipeline_right_id == 0)
 	{
-		process_id_2 = fork();
-		if (process_id_2 == -1)
+		pipeline_left_id = fork();
+		if (pipeline_left_id == -1)
 			perror_and_exit("fork", pipe_ends);
-		if (process_id_2 == 0)
+		if (pipeline_left_id == 0)
 			pipeline_left(argv, env, pipe_ends);
 		else
 			pipeline_right(argv, env, pipe_ends);
 	}
 	else
-		parent_process(process_id_1, pipe_ends);
+		parent_process(pipeline_right_id, pipe_ends);
 }

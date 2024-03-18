@@ -6,12 +6,14 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/14 21:33:07 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/18 16:10:51 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // This file contains the implementation of two functions, responsible for
-// executing the left and right side of the pipeline.
+// executing the left and right side of the pipeline. As well as a function
+// executed within the parent process monitoring the exit status of the last
+// (right) child process.
 
 #include "pipex.h"
 #include "libft/libft.h"
@@ -67,22 +69,22 @@ static void	print_file_err_msg(char *pre, char *file, int *pipe_ends)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-// Executes the left side of the process (in the child process).
+// Executes the left side of the process (child process).
 // - Opens the input file ('infile') specified by the first CL argument.
 // - Closes the unused read end of the pipe.
 // - Redirects standard input to read from the input file ('< infile' in CL).
 // - Redirects standard output to write to the write end of the pipe,
 //   which will serve as the input for the right side of the pipeline.
 // - Executes the command (second CL argument) using 'call_cmd'/'execve'.
-// - The child process terminates automatically after the command execution,
+// - The process terminates automatically after the command execution,
 //	 either due to success or failure of execve().
 void	pipeline_left(char **argv, char **env, int *pipe_ends)
 {
 	int		infile_fd;
 
+	infile_fd = open(argv[1], O_RDONLY);
 	if (close(pipe_ends[0]) == -1)
 		perror_and_exit("close", pipe_ends);
-	infile_fd = open(argv[1], O_RDONLY);
 	if (infile_fd == -1)
 	{
 		print_file_err_msg("pipex: ", argv[1], pipe_ends);
@@ -101,7 +103,7 @@ void	pipeline_left(char **argv, char **env, int *pipe_ends)
 	call_cmd(argv[2], env);
 }
 
-// Executes the right side of the process (in the parent process).
+// Executes the right side of the process (child of child process).
 // - Opens the output file ('outfile') specified by the fourth CL argument.
 // 	 If the outfile does not exist, it creates it with 'rw-r--r--' permissions.
 // - Closes the unused write end of the pipe.
@@ -109,15 +111,15 @@ void	pipeline_left(char **argv, char **env, int *pipe_ends)
 //   which receives input from the previous process in the pipeline.
 // - Redirects standard output to write to the output file ('> outfile' in CL).
 // - Executes the command (third CL argument) using 'call_cmd'/'execve'.
-// - The parent process terminates automatically after the command execution,
+// - The process terminates automatically after the command execution,
 //	 either due to success or failure of execve().
 void	pipeline_right(char **argv, char **env, int *pipe_ends)
 {
-	int	outfile_fd;
+	int		outfile_fd;
 
+	outfile_fd = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (close(pipe_ends[1]) == -1)
 		perror_and_exit("close", pipe_ends);
-	outfile_fd = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (outfile_fd == -1)
 	{
 		print_file_err_msg("pipex: ", argv[4], pipe_ends);
@@ -136,7 +138,7 @@ void	pipeline_right(char **argv, char **env, int *pipe_ends)
 	call_cmd(argv[3], env);
 }
 
-// Waits for the child process to finish and forwards the exit status
+// Waits for a specified process to finish and forwards the process' exit status
 // to the parent.
 void	parent_process(int process_id, int *pipe_ends)
 {
