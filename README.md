@@ -4,15 +4,17 @@
     <img src="https://github.com/alx-sch/42_pipex/assets/134595144/292c30ab-c530-4977-b4ec-863d889eca6b" alt="born2beroot_badge.png" />
 </p>
 
-Pipex mimics the functionality of the shell pipe command. Executing `./pipex infile cmd1 cmd2 outfile` emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between two commands.
+Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./pipex infile cmd1 cmd2 outfile` emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between commands executed within separate processes.
 
 ## Features
-- **Process Management:** Parent child processes inter-process communication via a pipe using  `pipe()` & `fork()`.
-- **Command Execution:** PATH environmental variable and execve()
-- **Protecting and Error Handling:** XX
-- **Imitating Shell Behavior:** XX
+- **Command Execution:** Utilizing the PATH environmental variable to execute commands via `execve()`.
+- **Process Management:** Creating new child processes and establishing inter-process communication via `fork()`, `pipe()`, `dup2()`, and `waitpid()`.
+- **Error Handling:** Ensuring robustness by implementing mechanisms to protect the program from unexpected behavior and failure, using `perror()`, `strerror()`, and `errno`.
+- **Imitating Shell Behavior:** Replicating the behavior of the shell (zsh) as closely as possible.
 
-## Environmental Variables
+## Command Execution
+
+#### The PATH Environmental Variable
 
 Printing out environmental variables (provided by system)
 ```C
@@ -41,6 +43,8 @@ USER=XXX
 [...]
 PATH=/home/aschenk/bin:/home/aschenk/bin:/usr/local/sbin:[...]
 ```
+#### Execve() System Call
+
 
 ## Pipex vs Shell
 
