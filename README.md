@@ -14,36 +14,31 @@ Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./
 
 ## Command Execution
 
-#### The PATH Environmental Variable
+### The PATH Environmental Variable
 
-Printing out environmental variables (provided by system)
-```C
-int	main(int argc, char *argv[], char *env[])
-{
-	int	i;
+Environmental variables, essential elements of the operating system's environment, store information utilized by various processes and applications to configure their behavior and access system resources.
 
-	i = 0;
-	(void)argc,
-	(void)argv;
-	while (env[i])
-	{
-		ft_printf("%s\n", env[i]);
-		i++;
-	}
-	return (0);
-}
+For example, commands such as 'grep', 'ls', or 'cat' all reside within the system as executable files. You can check the exact path(s) to a specific command with `which grep` or `which ls` (there might be more than one location where the executable is stored). 
+
+All possible paths where the system searches for command executables are stored within the environmental variable 'PATH'. Whenever you enter a command in the terminal, the system checks through these locations. For instance, you might be asked to add a directory containing a newly installed tool to the PATH variable to enable easy execution.   
+
+You can retrieve a list of all environmental variables and their values by calling env in the terminal. This list appears as follows (excerpt):
+
+```bash
+[...]
+LANGUAGE=en
+USER=aschenk
+SHELL=/bin/zsh
+[...]
+PATH=/home/aschenk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
-The PATH environment variable contains a list of directories where executable files are located. When you execute a command in the shell, the operating system searches through the directories listed in the PATH variable to find the corresponding executable file.
 
 Each directory in the PATH variable is separated by a colon (:) on Unix-like systems (such as Linux and macOS)
-```bash
-MAIL=XXX@student.42berlin.de
-LANGUAGE=en
-USER=XXX
-[...]
-PATH=/home/aschenk/bin:/home/aschenk/bin:/usr/local/sbin:[...]
-```
-#### Execve() System Call
+
+
+
+
+### The Execve() System Call
 
 
 ## Pipex vs Shell
