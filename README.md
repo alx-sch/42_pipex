@@ -41,6 +41,9 @@ Each directory in the PATH variable is separated by a colon (:) on Unix-like sys
 ### The Execve() System Call
 
 
+execve — execute with vector of environment variables
+
+
 ## Pipex vs Shell
 
 Using Z Shell (zsh).
