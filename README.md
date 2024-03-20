@@ -20,7 +20,7 @@ Environmental variables, essential elements of the operating system's environmen
 
 For example, commands such as 'grep', 'ls', or 'cat' all reside within the system as executable files. You can check the exact path(s) to a specific command with `which grep` or `which ls` (there might be more than one location where the executable is stored). 
 
-All possible paths where the system searches for command executables are stored within the environmental variable 'PATH'. Whenever you enter a command in the terminal, the system checks through these locations. For instance, you might be asked to add a directory containing a newly installed tool to the PATH variable to enable easy execution.   
+All possible paths where the system searches for command executables are stored within the environmental variable 'PATH'. Whenever you enter a command in the terminal, the system checks through these locations. For instance, you might have already been asked to add a directory containing a newly installed tool to the PATH variable, which would enable easy execution by simply typing in a command.
 
 You can retrieve a list of all environmental variables and their values by calling `env` in the terminal. This list appears as follows (excerpt):
 
