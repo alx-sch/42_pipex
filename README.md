@@ -8,7 +8,7 @@ Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./
 https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#command-execution
 ## Features
 - **[Command Execution](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#command-execution):** Utilizing the PATH environmental variable to execute commands via `execve()`.
-- **[Process Management](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#creating-and-managing-mutiple-processes):** Creating new child processes and establishing inter-process communication via `fork()`, `pipe()`, `dup2()`, and `waitpid()`.
+- **[Process Management](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#creating-and-managing-mutiple-processes):** Creating new child processes and establishing inter-process communication via `fork()`, `waitpid()`, `pipe()`, and `dup2()`.
 - **Error Handling:** Ensuring robustness by implementing mechanisms to protect the program from unexpected behavior and failure, using `perror()`, `strerror()`, and `errno`.
 - **Imitating Shell Behavior:** Replicating the behavior of the shell (zsh) as closely as possible.
 https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#creating-and-managing-mutiple-processes
