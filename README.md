@@ -36,7 +36,7 @@ PATH=/home/aschenk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/
 You can access the list of environmental variables within your C program by including `char **env` as an argument to the main function. For example: `int main(int argc, char **argv, char **env)`.
 
 
-To understand how Pipex retrieves the path to a specified command, please refer to the [get_command_path() function] (https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
+To understand how Pipex retrieves the path to a specified command, please refer to the [get_command_path() function](https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
 
 ### The Execve() System Call
 
