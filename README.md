@@ -38,7 +38,7 @@ To understand how Pipex retrieves the path to a specified command, please refer 
 
 ### The Execve() System Call
 
-So far so good – but why is it necessary to create multiple processes to execute multiple commands? Theoretically, you could save the output of a command in a variable and pass this as an input for another command, couldn't you? Such "command chaining" works in shell scripting, e.g.:   
+So far so good – but why is it necessary to create multiple processes to execute multiple commands? Theoretically, you could save the output of a command in a variable and pass this as an input for another command, couldn't you? Such "command chaining" does work in shell scripting, e.g.:   
 ```bash
 output_of_command1=$(command1)
 command2 "$output_of_command1"
