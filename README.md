@@ -84,8 +84,8 @@ int	main(void)
 	return (0);
 }
 ```
-<img width="600" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/1a2d28b7-2ab2-4c8e-a9ab-b893aaee6bea">
-<img width="600" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
+<img width="500" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/1a2d28b7-2ab2-4c8e-a9ab-b893aaee6bea">    
+<img width="500" alt="fork_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">   
 
 "*Before the fork!*" is printed out once, before `fork()` is called. Then, "*After the fork!*" is printed out twice: Once by the parent process and once by the child process. This is because the `fork()` call creates a new process, resulting in two separate execution paths. In the parent process, it returns the process ID (PID) of the child process (> 0), while in the child process, it returns 0. This makes it possible to execute different tasks by distinguishing between the PIDs (`if (pid == 0)` for child process tasks and `else` for parent process tasks).    
 
@@ -116,8 +116,11 @@ int	main(void)
 	return (0);
 }
 ```
-![Screenshot from 2024-03-21 20-10-00](https://github.com/alx-sch/42_pipex/assets/134595144/a6da9d1d-9a0d-45c2-932d-143db67456e1)
-  
+
+
+
+<img width="400" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/a6da9d1d-9a0d-45c2-932d-143db67456e1">  
+
 #### Introducing waitpid()   
 
 A more controlled way for synchronizing the execution order can be achieved with `waitpid()`. It halts the execution until the passed process terminates, allowing the parent process to wait for the completion of a specific child process before continuing its execution. `waitpid()` can also be used to retrieve and propagate the exit status of a child process (learn more [here](https://linux.die.net/man/2/waitpid)).
