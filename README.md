@@ -84,8 +84,13 @@ int	main(void)
 	return (0);
 }
 ```
-<img width="500" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/1a2d28b7-2ab2-4c8e-a9ab-b893aaee6bea">    
-<img width="500" alt="fork_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">   
+<div style="display: block;">
+	<img width="500" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/1a2d28b7-2ab2-4c8e-a9ab-b893aaee6bea">   
+</div>
+
+<div style="display: block;">
+<img width="500" alt="fork_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
+</div>
 
 "*Before the fork!*" is printed out once, before `fork()` is called. Then, "*After the fork!*" is printed out twice: Once by the parent process and once by the child process. This is because the `fork()` call creates a new process, resulting in two separate execution paths. In the parent process, it returns the process ID (PID) of the child process (> 0), while in the child process, it returns 0. This makes it possible to execute different tasks by distinguishing between the PIDs (`if (pid == 0)` for child process tasks and `else` for parent process tasks).    
 
@@ -116,10 +121,13 @@ int	main(void)
 	return (0);
 }
 ```
+<div style="display: block;">
+<img width="650" alt="fork_sleep_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/6e29ab16-35ee-44bd-a042-271187342356">
+</div>
 
-
-
-<img width="400" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/a6da9d1d-9a0d-45c2-932d-143db67456e1">  
+<div style="display: block;">
+<img width="500" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/a6da9d1d-9a0d-45c2-932d-143db67456e1">  
+</div>
 
 #### Introducing waitpid()   
 
@@ -150,7 +158,12 @@ int	main(void)
 	return (0);
 }
 ```
-![Screenshot from 2024-03-21 20-29-16](https://github.com/alx-sch/42_pipex/assets/134595144/7ba4e2cb-c024-4b52-ae9a-6d4d90fce39e)
+<div style="display: block;">
+<img width="800" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/a09836f7-f0d4-4d25-a69f-964892250eb8">  
+</div>
+<div style="display: block;">
+<img width="500" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/7ba4e2cb-c024-4b52-ae9a-6d4d90fce39e">  
+</div>
 
 ### Pipe()
 ssdsdsd
