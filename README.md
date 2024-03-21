@@ -7,7 +7,7 @@
 Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./pipex infile cmd1 cmd2 outfile` emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between commands executed within separate processes.
 
 ## Features
-- **Command Execution:** Utilizing the PATH environmental variable to execute commands via `execve()`.
+- **[Command Execution](https://github.com/alx-sch/42_pipex/edit/main/README.md#command-execution):** Utilizing the PATH environmental variable to execute commands via `execve()`.
 - **Process Management:** Creating new child processes and establishing inter-process communication via `fork()`, `pipe()`, `dup2()`, and `waitpid()`.
 - **Error Handling:** Ensuring robustness by implementing mechanisms to protect the program from unexpected behavior and failure, using `perror()`, `strerror()`, and `errno`.
 - **Imitating Shell Behavior:** Replicating the behavior of the shell (zsh) as closely as possible.
@@ -18,7 +18,7 @@ Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./
 
 Environmental variables, essential elements of the operating system's environment, store information utilized by various processes and applications to configure their behavior and access system resources.
 
-For example, commands such as 'grep', 'ls', or 'cat' all reside within the system as executable files. To determine the exact path(s) to a specific command, you can use `where` followed by the command name, such as `where grep` or `where ls` (there might be more than one location where the executable is stored).
+For example, common commands such as 'grep', 'ls', or 'cat' are exectuable files stored within the system. To determine the exact path(s) to a specific command, you can use `which` in bash or `which` in zsh, followed by the command name, such as `which grep` or `which ls` (there might be more than one location where the executable is stored).
 
 When calling a command, the terminal shell checks the PATH environment variable. This variable contains a list of directories where the operating system searches to find the executable file corresponding to the given command.
 
@@ -57,9 +57,7 @@ Since at least two commands need to be executed (`cmd1 < infile | cmd2 > outfile
 
 ## Creating and Managing Child Processes
 
-asas
-as
-asasas
+
 
 ## Pipex vs Shell
 
