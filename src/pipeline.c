@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/21 15:56:20 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/21 18:33:48 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 // FILE
 void	pipeline_left(char **argv, char **env, int *pipe_ends);
 void	pipeline_right(char **argv, char **env, int *pipe_ends);
-void	parent_process(int process_id, int *pipe_ends);
+void	parent_process(int process_id_1, int process_id_2, int *pipe_ends);
 
 // call_cmd.c
 void	call_cmd(char *cmd, char **env);
@@ -70,7 +70,7 @@ static void	print_file_err_msg(char *pre, char *file, int *pipe_ends)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-// Executes the left side of the process (child process).
+// Executes the left side of the process (in a child process).
 // - Opens the input file ('infile') specified by the first CL argument.
 // - Closes the unused read end of the pipe.
 // - Redirects standard input to read from the input file ('< infile' in CL).
@@ -93,18 +93,18 @@ void	pipeline_left(char **argv, char **env, int *pipe_ends)
 			perror_and_exit("close", pipe_ends);
 		exit(EXIT_FAILURE);
 	}
-	if (dup2(infile_fd, STDIN_FILENO) == -1)
-		perror_and_exit("dup2", pipe_ends);
-	if (close(infile_fd) == -1)
-		perror_and_exit("close", pipe_ends);
 	if (dup2(pipe_ends[1], STDOUT_FILENO) == -1)
 		perror_and_exit("dup2", pipe_ends);
 	if (close(pipe_ends[1]) == -1)
 		perror_and_exit("close", pipe_ends);
+	if (dup2(infile_fd, STDIN_FILENO) == -1)
+		perror_and_exit("dup2", pipe_ends);
+	if (close(infile_fd) == -1)
+		perror_and_exit("close", pipe_ends);
 	call_cmd(argv[2], env);
 }
 
-// Executes the right side of the process (child of child process).
+// Executes the right side of the process (in a child of child process).
 // - Opens the output file ('outfile') specified by the fourth CL argument.
 // 	 If the outfile does not exist, it creates it with 'rw-r--r--' permissions.
 // - Closes the unused write end of the pipe.
@@ -139,9 +139,9 @@ void	pipeline_right(char **argv, char **env, int *pipe_ends)
 	call_cmd(argv[3], env);
 }
 
-// Waits for a specified process to finish and forwards the process' exit status
-// to the parent.
-void	parent_process(int process_id, int *pipe_ends)
+// Closes the pipe and waits for child processes to finish.
+// Forwards the last child process' exit status to the parent.
+void	parent_process(int process_id_1, int process_id_2, int *pipe_ends)
 {
 	int	child_status;
 
@@ -149,7 +149,8 @@ void	parent_process(int process_id, int *pipe_ends)
 		perror_and_exit("close", pipe_ends);
 	if (close(pipe_ends[1]) == -1)
 		perror_and_exit("close", pipe_ends);
-	waitpid(process_id, &child_status, 0);
+	waitpid(process_id_1, NULL, 0);
+	waitpid(process_id_2, &child_status, 0);
 	if (WIFEXITED(child_status) && WEXITSTATUS(child_status) != EXIT_SUCCESS)
 		exit(EXIT_FAILURE);
 	else
