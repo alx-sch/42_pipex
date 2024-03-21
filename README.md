@@ -18,11 +18,11 @@ Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./
 
 Environmental variables, essential elements of the operating system's environment, store information utilized by various processes and applications to configure their behavior and access system resources.
 
-For example, commands such as 'grep', 'ls', or 'cat' all reside within the system as executable files. You can check the exact path(s) to a specific command with `which grep` or `which ls` (there might be more than one location where the executable is stored). 
+For example, commands such as 'grep', 'ls', or 'cat' all reside within the system as executable files. To determine the exact path(s) to a specific command, you can use `which` followed by the command name, such as `which grep` or `which ls` (there might be more than one location where the executable is stored).
 
-All possible paths where the system searches for command executables are stored within the environmental variable 'PATH'. Whenever you enter a command in the terminal, the system checks through these locations. For instance, you might have already been asked to add a directory containing a newly installed tool to the PATH variable, which would enable easy execution by simply typing in a command.
+When calling a command, the terminal shell checks the PATH environment variable. This variable contains a list of directories where the operating system searches to find the executable file corresponding to the given command.
 
-You can retrieve a list of all environmental variables and their values by calling `env` in the terminal. This list appears as follows (excerpt):
+To view a list of all environmental variables and their values, you can execute the `env` command in the terminal. This command displays a list like this (excerpt):
 
 ```bash
 [...]
@@ -33,10 +33,10 @@ SHELL=/bin/zsh
 PATH=/home/aschenk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
 
-Each directory in the PATH variable is separated by a colon (:) on Unix-like systems (such as Linux and macOS)
+You can access the list of environmental variables within your C program by including `char **env` as an argument to the main function. For example: `int main(int argc, char **argv, char **env)`.
 
 
-
+To understand how Pipex retrieves the path to a specified command, please refer to the [get_command_path() function] (https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
 
 ### The Execve() System Call
 
