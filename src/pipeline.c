@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 19:16:26 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/21 14:56:09 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/21 15:56:20 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,10 @@ void	parent_process(int process_id, int *pipe_ends)
 {
 	int	child_status;
 
-	close(pipe_ends[0]);
-	close(pipe_ends[1]);
+	if (close(pipe_ends[0]) == -1)
+		perror_and_exit("close", pipe_ends);
+	if (close(pipe_ends[1]) == -1)
+		perror_and_exit("close", pipe_ends);
 	waitpid(process_id, &child_status, 0);
 	if (WIFEXITED(child_status) && WEXITSTATUS(child_status) != EXIT_SUCCESS)
 		exit(EXIT_FAILURE);
