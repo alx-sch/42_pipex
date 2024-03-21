@@ -6,15 +6,18 @@
 #    By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 19:39:15 by aschenk           #+#    #+#              #
-#    Updated: 2024/03/12 12:37:46 by aschenk          ###   ########.fr        #
+#    Updated: 2024/03/21 15:05:06 by aschenk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =		pipex
 
-SRCS :=		$(wildcard src/*.c)
+SRCS :=		src/main.c \
+			src/pipeline.c \
+			src/call_cmd.c \
+			src/utils.c
 OBJS :=		$(SRCS:src/%.c=obj/%.o)
-HDRS := 	$(wildcard incl/*.h)
+HDRS := 	incl/pipex.h
 
 LIBFT_DIR =	src/libft
 LIBFT =		obj/libft/libft.a
@@ -63,7 +66,14 @@ obj/%.o: src/%.c $(HDRS)
 # Build the libft library by calling make in the src/libft directory
 # (-C changes directory). This target will be executed if libft.a is missing or
 # if any of the .c files in the src/libft directory are modified.
-$(LIBFT): $(wildcard $(LIBFT_DIR)/*.c) $(wildcard $(LIBFT_DIR)/*.h)
+$(LIBFT):	$(LIBFT_DIR)/ft_substr.c \
+			$(LIBFT_DIR)/ft_strcmp.c \
+			$(LIBFT_DIR)/ft_split.c \
+			$(LIBFT_DIR)/ft_strjoin.c \
+			$(LIBFT_DIR)/ft_putstr_fd.c \
+			$(LIBFT_DIR)/ft_strdup.c \
+			$(LIBFT_DIR)/ft_tolower.c \
+			$(LIBFT_DIR)/libft.h
 	@mkdir -p obj/libft
 	@echo ""
 	@make -s -C $(LIBFT_DIR)

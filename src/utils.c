@@ -6,14 +6,13 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 20:26:03 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/14 12:27:34 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/21 15:06:52 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // This file contains a utility functions for error messaging and exiting.
 
 #include "pipex.h"
-#include "libft/libft.h"
 
 // FILE
 void	perror_and_exit(char *msg, int *pipe_ends);

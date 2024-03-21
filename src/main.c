@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 18:45:47 by aschenk           #+#    #+#             */
-/*   Updated: 2024/03/18 12:54:19 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/03/21 15:07:56 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ void	parent_process(int process_id, int *pipe_ends);
 
 // utils.c
 void	perror_and_exit(char *msg, int *pipe_ends);
+
+// libft
+void	ft_putstr_fd(char *s, int fd);
 
 //	+++++++++++++++
 //	++ FUNCTIONS ++
