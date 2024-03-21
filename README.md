@@ -53,7 +53,7 @@ int execve(const char *path, char **const argv, char **const envp)
 
 `execve()` behaves uniquely by replacing the current process upon executing the command and does not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any code after the `execve()` call is not executed.
 
-To execute commands with input/output redirection, such as `cmd1 < infile | cmd2 > outfile`, at least two commands need to be processed. This entails utilizing the `execve()` system call multiple times, as each invocation of `execve()` replaces the current process with the command execution process. The management of multiple processes is achieved through the `fork()` system call, which creates child processes. Inter-process communication is established using `pipe()`, allowing data to flow from the output of one command to the input of another. 
+To execute commands with input/output redirection, such as `cmd1 < infile | cmd2 > outfile`, at least two commands need to be processed. This entails utilizing the `execve()` system call multiple times, as each invocation of `execve()` replaces the current process image with the command execution process. The management of multiple processes is achieved through the `fork()` system call, which creates child processes. Inter-process communication is established using `pipe()`, allowing data to flow from the output of one command to the input of another. 
 
 ## Pipe() & Fork(): Creating and Managing Child Processes
 
