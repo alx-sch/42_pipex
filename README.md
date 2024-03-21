@@ -18,7 +18,7 @@ Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./
 
 Environmental variables, essential elements of the operating system's environment, store information utilized by various processes and applications to configure their behavior and access system resources.
 
-For example, commands such as 'grep', 'ls', or 'cat' all reside within the system as executable files. To determine the exact path(s) to a specific command, you can use `which` followed by the command name, such as `which grep` or `which ls` (there might be more than one location where the executable is stored).
+For example, commands such as 'grep', 'ls', or 'cat' all reside within the system as executable files. To determine the exact path(s) to a specific command, you can use `where` followed by the command name, such as `where grep` or `where ls` (there might be more than one location where the executable is stored).
 
 When calling a command, the terminal shell checks the PATH environment variable. This variable contains a list of directories where the operating system searches to find the executable file corresponding to the given command.
 
@@ -32,17 +32,34 @@ SHELL=/bin/zsh
 [...]
 PATH=/home/aschenk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
-
-You can access the list of environmental variables within your C program by including `char **env` as an argument to the main function. For example: `int main(int argc, char **argv, char **env)`.
-
+You can access the list of environmental variables within your C program by including `char **envp` as the third argument to the main function, e.g.: `int main(int argc, char **argv, char **envp)`. This allows you to directly access the array of environmental variables from within your program and to pass it to `execve()`.
 
 To understand how Pipex retrieves the path to a specified command, please refer to the [`get_command_path()` function](https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
 
 ### The Execve() System Call
 
+So far so good – but why is it necessary to create multiple processes to execute multiple commands? Theoretically, you could save the output of a command in a variable and pass this as an input for another command, couldn't you? Such "command chaining" works in shell scripting, e.g.:   
+```bash
+output_of_command1=$(command1)
+command2 "$output_of_command1"
+```
+However, in C, you would use the system call `execve()` for this purpose (***exec***ute with ***v***ector of ***e***nvironment variables): 
+```C
+int execve(const char *path, char **const argv, char **const envp)
+```
+- **const char \*path:** Represents the path to the command executable, e.g. `/usr/bin/ls`.
+- **char \*\*const argv:** : Represents the command arguments in a NULL-terminated char array, e.g. `{"ls", "-l", NULL}`.
+- **char \*\*const envp:** Represents the list of environmental variables.
 
-execve — execute with vector of environment variables
+`execve()` behaves uniquely by replacing the current process upon executing the command and does not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any code after the `execve()` call is not executed.
 
+Since at least two commands need to be executed (`cmd1 < infile | cmd2 > outfile`), we need to call `execve()` at least twice. As `execve()` takes over and terminates the current process, we require multiple processes to execute the commands and establish communication between them, passing the output of the first command as the input of the second one. The next chapter explains how such processes are managed and how inter-process communication can be established.
+
+## Creating and Managing Child Processes
+
+asas
+as
+asasas
 
 ## Pipex vs Shell
 
