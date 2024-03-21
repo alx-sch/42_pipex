@@ -90,24 +90,15 @@ Comparison (output shell + output pipex):
 
 #### Invalid Input on Both Sides
 - Same as above, error messages for both sides are printed out -> processes handling each side run paralelly; having one exit does not result in the other process not being executed.
-  ![Screenshot from 2024-03-18 13-21-44](https://github.com/alx-sch/42_pipex/assets/134595144/247f9656-74f2-46f5-bec9-a8850e817081)
+  ![Screenshot from 2024-03-21 18-01-18](https://github.com/alx-sch/42_pipex/assets/134595144/bcc7a7cd-c3f1-44e1-b260-ce3f0f896be2)
+
 
 
 #### Proccesses run parallely
-- no sleep    
-![Screenshot from 2024-03-18 13-29-56](https://github.com/alx-sch/42_pipex/assets/134595144/00dcb8e8-cb5a-44d9-b1f6-7801c37f1e86)
+ ![Screenshot from 2024-03-21 18-04-44](https://github.com/alx-sch/42_pipex/assets/134595144/4714b3ff-dd0a-429b-a8e5-b55797dfd5e9)
+![Screenshot from 2024-03-21 18-10-38](https://github.com/alx-sch/42_pipex/assets/134595144/076bb83e-27a2-448a-93b5-4a92783c69b3)
 
-
-- wait 10 microseconds before calling pipeline_right()   
-![Screenshot from 2024-03-18 13-30-24](https://github.com/alx-sch/42_pipex/assets/134595144/b9dfb567-bf1b-4aaa-ac21-41fbf940a3af)
-
-- wait 100 microseconds before calling pipeline_right()
-  ![Screenshot from 2024-03-18 13-31-15](https://github.com/alx-sch/42_pipex/assets/134595144/a5b59adb-5453-47d7-9da3-adfddb79aaef)
-
-
-  
-
-#### Same file as input and output
+#### Outfile overwrites Infile
 - Let's say you want to count the words in a file and store the results in another, but use the same file as input and output `< infile.txt wc -w | cat > infile.txt`, the result would be file with '0' in it -> The 'outfile' is created first as an empty file (overwriting the actual 'infile') and THEN process are initiated.
 
 #### Parent waits for the last process to finish
