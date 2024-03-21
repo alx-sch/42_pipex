@@ -8,17 +8,17 @@ Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./
 
 ## Features
 - **[Command Execution](https://github.com/alx-sch/42_pipex/edit/main/README.md#command-execution):** Utilizing the PATH environmental variable to execute commands via `execve()`.
-- **Process Management:** Creating new child processes and establishing inter-process communication via `fork()`, `pipe()`, `dup2()`, and `waitpid()`.
+- **[Process Management](https://github.com/alx-sch/42_pipex/edit/main/README.md#creating-and-managing-mutiple-processes):** Creating new child processes and establishing inter-process communication via `fork()`, `pipe()`, `dup2()`, and `waitpid()`.
 - **Error Handling:** Ensuring robustness by implementing mechanisms to protect the program from unexpected behavior and failure, using `perror()`, `strerror()`, and `errno`.
 - **Imitating Shell Behavior:** Replicating the behavior of the shell (zsh) as closely as possible.
 
 ## Command Execution
 
-### The PATH Environmental Variable
+#### The PATH Environmental Variable
 
 Environmental variables, essential elements of the operating system's environment, store information utilized by various processes and applications to configure their behavior and access system resources.
 
-For example, common commands such as 'grep', 'ls', or 'cat' are exectuable files stored within the system. To determine the exact path(s) to a specific command, you can use `which` in bash or `which` in zsh, followed by the command name, such as `which grep` or `which ls` (there might be more than one location where the executable is stored).
+For example, common commands such as 'grep', 'ls', or 'cat' are exectuable files stored within the system. To determine the exact path(s) to a specific command, you can use `which` in bash or `where` in zsh, followed by the command name, such as `which grep` or `which ls` (there might be more than one location where executable is stored).
 
 When calling a command, the terminal shell checks the PATH environment variable. This variable contains a list of directories where the operating system searches to find the executable file corresponding to the given command.
 
@@ -34,7 +34,7 @@ PATH=/home/aschenk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/
 ```
 You can access the list of environmental variables within your C program by including `char **envp` as the third argument to the main function, e.g.: `int main(int argc, char **argv, char **envp)`. This allows you to directly access the array of environmental variables from within your program and to pass it to `execve()`.
 
-To understand how Pipex retrieves the path to a specified command, please refer to the [`get_command_path()` function](https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
+To understand how Pipex retrieves the path to a specified command, please refer to the `get_command_path()` function [here](https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
 
 ### The Execve() System Call
 
@@ -53,12 +53,105 @@ int execve(const char *path, char **const argv, char **const envp)
 
 `execve()` behaves uniquely by replacing the current process upon executing the command and does not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any code after the `execve()` call is not executed.
 
-To execute commands with input/output redirection, such as `cmd1 < infile | cmd2 > outfile`, at least two commands need to be processed. This entails utilizing the `execve()` system call multiple times, as each invocation of `execve()` replaces the current process image with the command execution process. The management of multiple processes is achieved through the `fork()` system call, which creates child processes. Inter-process communication is established using `pipe()`, allowing data to flow from the output of one command to the input of another. 
+To execute commands with input/output redirection, such as `cmd1 < infile | cmd2 > outfile`, each command execution requires a separate call to `execve()`. Since `execve()` replaces the current process with the command execution, one process per command is necessary. The creation of additional processes is achieved through `fork()`. To enable communication between these processes, `pipe()` is used, which establishes a unidirectional communication channel.
 
-## Pipe() & Fork(): Creating and Managing Child Processes
+## Creating and Managing Mutiple Processes
+
+### Fork() & Waitpid()
+Creating a new process is simply done by calling `fork()`, which creates two identical copies of the program's execution environment, with one being the parent (return value of `fork()` > 0) and the other being the child (return value of `fork()` = 0).
+
+Let's look at a simple program using `fork()`:
+
+```C
+// fork.c
+
+#include <stdio.h> // prinft()
+#include <unistd.h> // fork(), usleep()
+#include <sys/types.h> // pid_t: int or long representing process ID's (PIDs)
+
+int	main(void)
+{
+	pid_t	child_pid;
+
+	printf("Before the fork!\n");
+	child_pid = fork();
+	printf("After the fork! Child PID: %d\n", child_pid);
+	if (child_pid == 0)
+		printf("Hello from the child! Child PID: %d\n", child_pid);
+	else
+		printf("Hello from the parent! Child PID: %d\n", child_pid);
+
+	return (0);
+}
+```
+![Screenshot from 2024-03-21 20-03-23](https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64)
+
+"*Before the fork!*" is printed out once, before `fork()` is called. Then, "*After the fork!*" is printed out twice: Once by the parent process and once by the child process. This is because the `fork()` call creates a new process, resulting in two separate execution paths. In the parent process, it returns the process ID (PID) of the child process (> 0), while in the child process, it returns 0. This makes it possible to let processes execute different tasks by distinguishing between the PIDs (`if (pid == 0)` for child process tasks and `else` for parent process tasks).    
 
 
+#### Introducing sleep()
+Note that the parent and child processes run concurrently with each other, meaning they execute independently and their execution order is not guaranteed. While it's not straightforward to predict the exact order in which they will execute, introducing delays using functions like `usleep()` can help synchronize their behavior to some extent:
 
+```C
+// sleep_fork.c
+
+#include <stdio.h> // prinft()
+#include <unistd.h> // fork(), usleep()
+#include <sys/types.h> // pid_t: int or long representing process ID's (PIDs)
+
+int	main(void)
+{
+	pid_t	child_pid;
+
+	printf("Before the fork!\n");
+	child_pid = fork();
+	printf("After the fork! Child PID: %d\n", child_pid);
+	usleep(10); // pause execution for 10 microseconds
+	if (child_pid == 0)
+		printf("Hello from the child! Child PID: %d\n", child_pid);
+	else
+		printf("Hello from the parent! Child PID: %d\n", child_pid);
+
+	return (0);
+}
+```
+![Screenshot from 2024-03-21 20-10-00](https://github.com/alx-sch/42_pipex/assets/134595144/a6da9d1d-9a0d-45c2-932d-143db67456e1)
+  
+#### Introducing waitpid()   
+
+A more controlled way for synchronizing the execution order can be achieved with `waitpid()`. It halts the execution until the passed process terminates, allowing the parent process to wait for the completion of specific child processes before continuing its execution. `waitpid()` can also be used to retrieve and propagate the exit status of a child process (learn more [here](https://linux.die.net/man/2/waitpid)).
+```C
+// waitpid_fork.c
+
+#include <stdio.h> // prinft()
+#include <unistd.h> // fork(), usleep()
+#include <sys/types.h> // pid_t: int or long representing process ID's (PIDs)
+#include <sys/wait.h> // waitpid()
+
+int	main(void)
+{
+	pid_t	child_pid;
+
+	printf("Before the fork!\n");
+	child_pid = fork();
+	printf("After the fork! Child PID: %d\n", child_pid);
+	usleep(10); // pause execution for 10 microseconds
+	if (child_pid == 0)
+		printf("Hello from the child! Child PID: %d\n", child_pid);
+	else
+	{
+		waitpid(child_pid, NULL, 0); // waits for the child process to finish
+		printf("Hello from the parent! Child PID: %d\n", child_pid);
+	}
+	return (0);
+}
+```
+![Screenshot from 2024-03-21 20-29-16](https://github.com/alx-sch/42_pipex/assets/134595144/7ba4e2cb-c024-4b52-ae9a-6d4d90fce39e)
+
+### Pipe()
+ssdsdsd
+sdsds
+sdsd
 
 ## Pipex vs Shell
 
