@@ -5,7 +5,7 @@
 </p>
 
 Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./pipex infile cmd1 cmd2 outfile` emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between commands executed within separate processes.
-https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#command-execution
+
 ## Features
 - **[Command Execution](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#command-execution):** Utilizing the PATH environmental variable to execute commands via `execve()`.
 - **[Process Management](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#creating-and-managing-mutiple-processes):** Creating new child processes and establishing inter-process communication via `fork()`, `waitpid()`, `pipe()`, and `dup2()`.
@@ -16,7 +16,7 @@ https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#creating-and-ma
 
 #### The PATH Environmental Variable
 
-Environmental variables, essential elements of the operating system's environment, store information utilized by various processes and applications to configure their behavior and access system resources.
+Environmental variables are essential elements of the operating system's environment. They store information that various processes and applications utilize to configure their behavior and access system resources.
 
 For example, common commands such as 'grep', 'ls', or 'cat' are exectuable files stored within the system. To determine the exact path(s) to a specific command, you can use `which` in bash or `where` in zsh, followed by the command name, such as `which grep` or `which ls` (there might be more than one location where executable is stored).
 
@@ -32,7 +32,7 @@ SHELL=/bin/zsh
 [...]
 PATH=/home/aschenk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
-You can access the list of environmental variables within your C program by including `char **envp` as the third argument to the main function, e.g.: `int main(int argc, char **argv, char **envp)`. This allows you to directly access the array of environmental variables from within your program and to pass it to `execve()`.
+You can access the list of environmental variables within your C program by including `char **envp` as the third argument to the main function, e.g.: `int main(int argc, char **argv, char **envp)`. This allows you to directly access the array of environmental variables within your program and pass it to `execve()`.
 
 To understand how Pipex retrieves the path to a specified command, please refer to the `get_command_path()` function [here](https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
 
