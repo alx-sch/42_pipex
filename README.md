@@ -51,9 +51,9 @@ int execve(const char *path, char **const argv, char **const envp)
 - **char \*\*const argv:** : Represents the command arguments in a NULL-terminated char array, e.g. `{"ls", "-l", NULL}`.
 - **char \*\*const envp:** Represents the list of environmental variables.
 
-`execve()` behaves uniquely by replacing the current process upon executing the command and does not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any code after the `execve()` call is not executed.
+`execve()` behaves uniquely by loading and executing a new program (the command), effectively replacing the current process when called. It does not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any code after the `execve()` call is not executed.
 
-To execute commands with input/output redirection, such as `cmd1 < infile | cmd2 > outfile`, each command execution requires a separate call to `execve()`. Since `execve()` replaces the current process, one process per command is necessary. The creation of additional processes is achieved through `fork()`. To enable communication between these processes, `pipe()` is used, which establishes a unidirectional communication channel.
+So, to execute commands with input/output redirection, such as `cmd1 < infile | cmd2 > outfile`, each command execution requires a separate call to `execve()`. Since `execve()` replaces the current process, one process per command is necessary. The creation of additional processes is achieved through `fork()`. To enable communication between these processes, `pipe()` is used, which establishes a unidirectional communication channel.
 
 ## Creating and Managing Mutiple Processes
 
