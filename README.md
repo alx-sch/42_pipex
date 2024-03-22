@@ -20,7 +20,7 @@ Environmental variables are essential elements of the operating system's environ
 
 For example, common commands such as 'grep', 'ls', or 'cat' are exectuable files stored within the system. To determine the exact path(s) to a specific command, you can use `which` in bash or `where` in zsh, followed by the command name, such as `which grep` or `which ls`. 
 
-When calling a command, the terminal shell checks the PATH environment variable. This variable contains a list of directories where the operating system searches to find the executable file corresponding to the given command.
+When calling a command, the terminal shell checks the PATH environment variable. This variable contains a list of directories, delimited by colons, where the operating system searches to find the executable file corresponding to the given command.
 
 To view a list of all environmental variables and their values, you can execute the `env` command in the terminal. This command displays a list like this (excerpt):
 
