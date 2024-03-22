@@ -40,8 +40,8 @@ To understand how Pipex retrieves the path to a specified command, please refer 
 
 So far so good – but why is it necessary to create multiple processes to execute multiple commands? Theoretically, you could save the output of a command in a variable and pass this as an input for another command, couldn't you? Such "command chaining" does work in shell scripting, e.g.:   
 ```bash
-output_of_command1=$(command1)
-command2 "$output_of_command1"
+output_of_command1=$(< infile.txt wc -c)
+command2 "$output_of_command1" > outfile.txt
 ```
 However, in C, you would use the system call `execve()` for this purpose (***exec***ute with ***v***ector of ***e***nvironment variables): 
 ```C
