@@ -60,19 +60,19 @@ So, to execute commands with input/output redirection, such as `cmd1 < infile | 
 ### Fork() & Waitpid()
 Creating a new process is simply done by calling `fork()`, which creates two identical copies of the program's execution environment, with one being the parent (return value of `fork()` > 0) and the other being the child (return value of `fork()` = 0).
 
-Let's look at a simple program using `fork()`:
+#### Let's look at a simple program using `fork()`:
 
 ```C
 // fork.c
-
+			
 #include <stdio.h> // prinft()
 #include <unistd.h> // fork(), usleep()
 #include <sys/types.h> // pid_t: int or long representing process ID's (PIDs)
-
+			
 int	main(void)
 {
 	pid_t	child_pid;
-
+			
 	printf("Before the fork!\n");
 	child_pid = fork();
 	printf("After the fork! Child PID: %d\n", child_pid);
@@ -80,19 +80,19 @@ int	main(void)
 		printf("Hello from the child! Child PID: %d\n", child_pid);
 	else
 		printf("Hello from the parent! Child PID: %d\n", child_pid);
-
+			
 	return (0);
 }
-```
-<div style="display: block;">
-<img width="500" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/faadd95b-670b-4803-895c-a748ee99901a">   
+```   
+ <div style="display: block;">
+	<img width="600" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/01db82a1-dc2f-4bad-b671-ff4fb9294d10">   
+ </div>
+	
+ <div style="display: block;">
+	<img width="500" alt="fork_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
 </div>
 
-<div style="display: block;">
-<img width="500" alt="fork_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
-</div>
-
-"*Before the fork!*" is printed out once, before `fork()` is called. Then, "*After the fork!*" is printed out twice: Once by the parent process and once by the child process. This is because the `fork()` call creates a new process, resulting in two separate execution paths. In the parent process, it returns the process ID (PID) of the child process (> 0), while in the child process, it returns 0. This makes it possible to execute different tasks by distinguishing between the PIDs (`if (pid == 0)` for child process tasks and `else` for parent process tasks).    
+"*Before the fork!*" is printed out once, before `fork()` is called. Then, "*After the fork!*" is printed out twice: Once by the parent process and once by the child process. This is because the `fork()` call creates a new process, resulting in two separate execution paths. In the parent process, it returns the process ID (PID) of the child process (> 0), while in the child process, it returns 0. This makes it possible to execute different tasks by distinguishing between the PIDs (`if (pid == 0)` for child process tasks and `else` for parent process tasks).
 
 
 #### Introducing sleep()
@@ -122,7 +122,7 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="610" alt="fork_sleep_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/158a02bd-1d81-41dd-9c2c-b48ea23dd1cf">
+<img width="710" alt="fork_sleep_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/628ba608-ebc6-456f-98f6-f189e4087c65">
 </div>
 
 <div style="display: block;">
@@ -159,8 +159,9 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="730" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/94be704b-b981-487a-a353-b2901aa70af8">  
+<img width="830" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/af27ff0b-f249-40d6-886f-cfb8f3d9d6d7">  
 </div>
+
 <div style="display: block;">
 <img width="500" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/7ba4e2cb-c024-4b52-ae9a-6d4d90fce39e">  
 </div>
