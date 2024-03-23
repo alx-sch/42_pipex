@@ -60,7 +60,7 @@ So, to execute commands with input/output redirection, such as `cmd1 < infile | 
 ### Fork() & Waitpid()
 Creating a new process is simply done by calling `fork()`, which creates two identical copies of the program's execution environment, with one being the parent (return value of `fork()` > 0) and the other being the child (return value of `fork()` = 0).
 
-#### Let's look at a simple program using `fork()`:
+Let's look at a simple program using `fork()`:
 
 ```C
 // fork.c
