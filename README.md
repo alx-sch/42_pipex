@@ -47,9 +47,9 @@ However, in C, you would use the system call `execve()` for this purpose (***exe
 ```C
 int execve(const char *path, char **const argv, char **const envp)
 ```
-- **const char \*path:** Represents the path to the command executable, e.g. `/usr/bin/ls`.
-- **char \*\*const argv:** : Represents the command arguments in a NULL-terminated char array, e.g. `{"ls", "-l", NULL}`.
-- **char \*\*const envp:** Represents the list of environmental variables.
+- const char \*path: Represents the path to the command executable, e.g. `/usr/bin/ls`.
+- char \*\*const argv: Represents the command arguments in a NULL-terminated char array, e.g. `{"ls", "-l", NULL}`.
+- char \*\*const envp: Represents the list of environmental variables.
 
 `execve()` behaves uniquely by loading and executing a new program (the command), effectively replacing the current process when called. It does not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any code after the `execve()` call is not executed.
 
