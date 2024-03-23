@@ -85,9 +85,9 @@ int	main(void)
 }
 ```   
  <div style="display: block;">
-	<img width="600" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/01db82a1-dc2f-4bad-b671-ff4fb9294d10">   
+	<img width="600" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/8ab2944e-ab9c-4109-831e-7643ac78b17b">   
  </div>
-	
+
  <div style="display: block;">
 	<img width="500" alt="fork_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
 </div>
@@ -122,7 +122,7 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="710" alt="fork_sleep_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/628ba608-ebc6-456f-98f6-f189e4087c65">
+<img width="710" alt="fork_sleep_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/819b6dc3-d43c-46e0-846a-0f71edf4bae6">
 </div>
 
 <div style="display: block;">
