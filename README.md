@@ -167,9 +167,70 @@ int	main(void)
 </div>
 
 ### Pipe()
-ssdsdsd
-sdsds
-sdsd
+```C
+#include <unistd.h> // pipe(), read(), write()
+#include <stdio.h> // printf()
+#include <string.h> // strlen()
+
+int	main(void)
+{
+	int	pipe_fd[2];
+	pid_t	child_pid;
+	char	message[] = "Hello from the child!";
+	char	buffer[42];
+
+	pipe(pipe_fd); // Pipe initialization
+	child_pid = fork();
+
+	if (child_pid == 0) // Child process
+	{
+		close(pipe_fd[0]); // Close the read end of the pipe
+		write(pipe_fd[1], message, strlen(message) + 1);
+		close(pipe_fd[1]); // Close the write end of the pipe
+	}
+	else // Parent process
+	{
+		close(pipe_fd[1]); // Close the write end of the pipe
+		read(pipe_fd[0], buffer, sizeof(buffer));
+		printf("The child says: %s\n", buffer);
+		close(pipe_fd[0]); // Close the read end of the pipe
+	}
+
+	return (0);
+}
+```
+
+```C
+#include <unistd.h> // pipe(), read(), write()
+#include <stdio.h> // printf()
+
+int	main(void)
+{
+	int		pipe_fd[2];
+	pid_t	child_pid;
+	char	buffer[42];
+
+	pipe(pipe_fd); // Pipe initialization
+	child_pid = fork();
+
+	if (child_pid == 0) // Child process
+	{
+		close(pipe_fd[0]); // Close the read end of the pipe
+		dup2(pipe_fd[1], 1); // Redirect stdout (fd = 0) to the write end of the pipe
+		close(pipe_fd[1]); // Close the write end of the pipe
+		printf("Hello from the child! PID: %d\n", child_pid); // Prints message into the pipe (as stdout is redirected)
+	}
+	else // Parent process
+	{
+		close(pipe_fd[1]); // Close the write end of the pipe
+		read(pipe_fd[0], buffer, sizeof(buffer));
+		close(pipe_fd[0]); // Close the read end of the pipe
+		printf("The child says: %s", buffer); //
+	}
+
+	return (0);
+}
+```
 
 ## Pipex vs Shell
 
