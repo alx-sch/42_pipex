@@ -4,7 +4,7 @@
     <img src="https://github.com/alx-sch/42_pipex/assets/134595144/292c30ab-c530-4977-b4ec-863d889eca6b" alt="born2beroot_badge.png" />
 </p>
 
-Pipex mimics the functionality of the shell pipe command '` | `' : Executing `./pipex infile cmd1 cmd2 outfile` emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between commands executed within separate processes.
+Pipex mimics the functionality of the shell pipe command '` | `' by executing `./pipex infile cmd1 cmd2 outfile`, which emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between commands executed within separate processes.
 
 ## Features
 - **[Command Execution](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#command-execution):** Utilizing the PATH environmental variable to execute commands via `execve()`.
