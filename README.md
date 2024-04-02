@@ -44,7 +44,7 @@ So far so good – but why is it necessary to create multiple processes to execu
 output_of_command1=$(< infile.txt command1) 
 command2 "$output_of_command1" > outfile.txt
 ```
-However, in C, you would use the system call `execve()` for this purpose (***exec***ute with ***v***ector of ***e***nvironment variables): 
+However, in C, you would use a system call from the `exec()` family for this purpose ((for more information, see [here](https://www.cse.cuhk.edu.hk/~ericlo/teaching/os/lab/4-ProcessBasic/exec-family.html)). As per project requirements, Pipex uses `execve()` (***exec***ute with ***v***ector of ***e***nvironment variables): 
 ```C
 int execve(const char *path, char **const argv, char **const envp)
 ```
@@ -52,7 +52,7 @@ int execve(const char *path, char **const argv, char **const envp)
 - char \*\*const argv: Represents the command arguments in a NULL-terminated char array, e.g. `{"ls", "-l", NULL}`.
 - char \*\*const envp: Represents the list of environmental variables.
 
-`execve()` behaves uniquely by loading and executing a new program (the command), effectively replacing the current process when called. It does not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any code after the `execve()` call is not executed.
+Members of the `exec()` family behave uniquely by loading and executing a new program (the command), effectively replacing the current process when called. They do not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any following code is not executed.
 
 So, to execute commands with input/output redirection, such as `cmd1 < infile | cmd2 > outfile`, each command execution requires a separate call to `execve()`. Since `execve()` replaces the current process, one process per command is necessary. The creation of additional processes is achieved through `fork()`. To enable communication between these processes, `pipe()` is used, which establishes a unidirectional communication channel.
 
