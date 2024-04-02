@@ -30,9 +30,10 @@ LANGUAGE=en
 USER=aschenk
 SHELL=/bin/zsh
 [...]
-PATH=/home/aschenk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
-You can access the list of environmental variables within your C program by including `char **envp` as the third argument to the main function, e.g.: `int main(int argc, char **argv, char **envp)`. This allows you to directly access the array of environmental variables within your program and pass it to `execve()`.
+
+In a C program, you can access the list of environmental variables by including `char **envp` as the third argument to the main function, e.g. `int main(int argc, char **argv, char **envp)`. The envp parameter is structured as an array of strings in the format "VARIABLE=value", for example `envp = {[...], PATH=/usr/local/sbin:[...], [...], NULL}`.
 
 To understand how Pipex retrieves the path to a specified command, please refer to the `get_command_path()` function [here](https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
 
