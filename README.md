@@ -97,7 +97,7 @@ int	main(void)
 
 
 #### Introducing sleep()
-Note that the parent and child processes run in parallel, meaning they execute independently and their execution order is somewhat random. While it's not straightforward to predict the exact order in which they will execute, introducing delays using functions like `usleep()` can help synchronize their behavior to some extent:
+Note that the parent and child processes run in parallel, meaning they execute independently and their execution order is somewhat random. While it's not straightforward to predict the exact order in which they will execute, introducing delays using functions like `sleep() / usleep()` can help synchronize their behavior to some extent:
 
 ```C
 // sleep_fork.c
