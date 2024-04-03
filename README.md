@@ -90,7 +90,7 @@ int	main(void)
  </div>
 
  <div style="display: block;">
-	<img width="500" alt="fork_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
+	<img width="420" alt="fork_prinout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
 </div>
 
 "*Before the fork!*" is printed out once, before `fork()` is called. Then, "*After the fork!*" is printed out twice: Once by the parent process and once by the child process. This is because the `fork()` call creates a new process, resulting in two separate execution paths. In the parent process, it returns the process ID (PID) of the child process (> 0), while in the child process, it returns 0. This makes it possible to execute different tasks by distinguishing between the PIDs (`if (pid == 0)` for child process tasks and `else` for parent process tasks).
@@ -160,11 +160,11 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="830" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/af27ff0b-f249-40d6-886f-cfb8f3d9d6d7">  
+<img width="830" alt="fork_waitpid_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/af27ff0b-f249-40d6-886f-cfb8f3d9d6d7">  
 </div>
 
 <div style="display: block;">
-<img width="500" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/7ba4e2cb-c024-4b52-ae9a-6d4d90fce39e">  
+<img width="500" alt="fork_waitpid_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/7ba4e2cb-c024-4b52-ae9a-6d4d90fce39e">  
 </div>
 
 ### Pipe()
@@ -204,14 +204,22 @@ int	main(void)
 	return (0);
 }
 ```
+<div style="display: block;">
+<img width="930" alt="pipe"  src="https://github.com/alx-sch/42_pipex/assets/134595144/9e8cda54-0a04-4fa2-8b6e-d9e2ccbc92fe">
+</div>
 
+<div style="display: block;">
+<img width="400" alt="pipe_dup2_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/05015ed0-6c63-480c-a4bc-3860734e0166">
+</div>
+
+#### Introducing dup2()
 ```C
-#include <unistd.h> // pipe(), read(), write()
+#include <unistd.h> // pipe(), read()
 #include <stdio.h> // printf()
 
 int	main(void)
 {
-	int		pipe_fd[2];
+	int	pipe_fd[2];
 	pid_t	child_pid;
 	char	buffer[42];
 
@@ -222,20 +230,29 @@ int	main(void)
 	{
 		close(pipe_fd[0]); // Close the read end of the pipe
 		dup2(pipe_fd[1], 1); // Redirect stdout (fd = 0) to the write end of the pipe
-		close(pipe_fd[1]); // Close the write end of the pipe
-		printf("Hello from the child! PID: %d\n", child_pid); // Prints message into the pipe (as stdout is redirected)
+		// Now stdout is redirected to the pipe, so printf will write to the pipe
+		printf("Hello from the child! PID: %d", child_pid);
+		close(pipe_fd[1]); // Close the original write end of the pipe
 	}
 	else // Parent process
 	{
 		close(pipe_fd[1]); // Close the write end of the pipe
-		read(pipe_fd[0], buffer, sizeof(buffer));
+		printf("Here is the parent! PID: %d\n", child_pid);
+		read(pipe_fd[0], buffer, sizeof(buffer)); // Read message from pipe
+		printf("The child says: '%s'\n", buffer);
 		close(pipe_fd[0]); // Close the read end of the pipe
-		printf("The child says: %s", buffer); //
 	}
 
 	return (0);
 }
 ```
+<div style="display: block;">
+<img width="930" alt="pipe_dup2"  src="https://github.com/alx-sch/42_pipex/assets/134595144/66a75071-7f86-4171-854f-dc23adcfe24b">
+</div>
+
+<div style="display: block;">
+<img width="400" alt="pipe_dup2_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/897f8046-5347-4ab3-9bf0-1ba6b26031b6">
+</div>
 
 ## Pipex vs Shell
 
