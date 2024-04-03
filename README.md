@@ -77,9 +77,9 @@ int	main(void)
 	printf("Before the fork!\n");
 	child_pid = fork();
 	printf("After the fork! Child PID: %d\n", child_pid);
-	if (child_pid == 0)
+	if (child_pid == 0) // Child process
 		printf("Hello from the child! Child PID: %d\n", child_pid);
-	else
+	else // Parent process
 		printf("Hello from the parent! Child PID: %d\n", child_pid);
 			
 	return (0);
@@ -113,10 +113,10 @@ int	main(void)
 	printf("Before the fork!\n");
 	child_pid = fork();
 	printf("After the fork! Child PID: %d\n", child_pid);
-	usleep(10); // pause execution for 10 microseconds
-	if (child_pid == 0)
+	usleep(10); // Pause execution for 10 microseconds
+	if (child_pid == 0) // Child process
 		printf("Hello from the child! Child PID: %d\n", child_pid);
-	else
+	else // Parent process
 		printf("Hello from the parent! Child PID: %d\n", child_pid);
 
 	return (0);
@@ -148,10 +148,10 @@ int	main(void)
 	printf("Before the fork!\n");
 	child_pid = fork();
 	printf("After the fork! Child PID: %d\n", child_pid);
-	usleep(10); // pause execution for 10 microseconds
-	if (child_pid == 0)
+	usleep(10); // Pause execution for 10 microseconds
+	if (child_pid == 0) // Child process
 		printf("Hello from the child! Child PID: %d\n", child_pid);
-	else
+	else // Parent process
 	{
 		waitpid(child_pid, NULL, 0); // waits for the child process to finish
 		printf("Hello from the parent! Child PID: %d\n", child_pid);
@@ -177,7 +177,8 @@ int	main(void)
 {
 	int	pipe_fd[2];
 	pid_t	child_pid;
-	char	message[] = "Hello from the child!";
+	pid_t	received_child_pid;
+	char	message[] = "Hello from the child! PID:";
 	char	buffer[42];
 
 	pipe(pipe_fd); // Pipe initialization
@@ -186,14 +187,17 @@ int	main(void)
 	if (child_pid == 0) // Child process
 	{
 		close(pipe_fd[0]); // Close the read end of the pipe
-		write(pipe_fd[1], message, strlen(message) + 1);
+		write(pipe_fd[1], message, strlen(message) + 1); // Write message to the pipe
+		write(pipe_fd[1], &child_pid, sizeof(pid_t)); // Write child PID to the pipe
 		close(pipe_fd[1]); // Close the write end of the pipe
 	}
 	else // Parent process
 	{
 		close(pipe_fd[1]); // Close the write end of the pipe
-		read(pipe_fd[0], buffer, sizeof(buffer));
-		printf("The child says: %s\n", buffer);
+		printf("Here is the pareny! PID: %d\n", child_pid);
+		read(pipe_fd[0], buffer, sizeof(buffer)); // Read message from pipe
+		read(pipe_fd[0], &received_child_pid, sizeof(pid_t)); // Read child PID from pipe
+		printf("The child says: '%s %d'\n", buffer, received_child_pid);
 		close(pipe_fd[0]); // Close the read end of the pipe
 	}
 
