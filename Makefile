@@ -6,7 +6,7 @@
 #    By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/05 19:39:15 by aschenk           #+#    #+#              #
-#    Updated: 2024/03/21 15:05:06 by aschenk          ###   ########.fr        #
+#    Updated: 2024/04/05 17:04:41 by aschenk          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,13 +66,54 @@ obj/%.o: src/%.c $(HDRS)
 # Build the libft library by calling make in the src/libft directory
 # (-C changes directory). This target will be executed if libft.a is missing or
 # if any of the .c files in the src/libft directory are modified.
-$(LIBFT):	$(LIBFT_DIR)/ft_substr.c \
-			$(LIBFT_DIR)/ft_strcmp.c \
-			$(LIBFT_DIR)/ft_split.c \
-			$(LIBFT_DIR)/ft_strjoin.c \
-			$(LIBFT_DIR)/ft_putstr_fd.c \
-			$(LIBFT_DIR)/ft_strdup.c \
+$(LIBFT):	$(LIBFT_DIR)/ft_isalpha.c \
+			$(LIBFT_DIR)/ft_isdigit.c \
+			$(LIBFT_DIR)/ft_isalnum.c \
+			$(LIBFT_DIR)/ft_isascii.c \
+			$(LIBFT_DIR)/ft_isprint.c \
+			$(LIBFT_DIR)/ft_strlen.c \
+			$(LIBFT_DIR)/ft_toupper.c \
 			$(LIBFT_DIR)/ft_tolower.c \
+			$(LIBFT_DIR)/ft_strncmp.c \
+			$(LIBFT_DIR)/ft_strlcpy.c \
+			$(LIBFT_DIR)/ft_strlcat.c \
+			$(LIBFT_DIR)/ft_strchr.c \
+			$(LIBFT_DIR)/ft_strrchr.c \
+			$(LIBFT_DIR)/ft_strnstr.c \
+			$(LIBFT_DIR)/ft_memset.c \
+			$(LIBFT_DIR)/ft_memchr.c \
+			$(LIBFT_DIR)/ft_memcpy.c \
+			$(LIBFT_DIR)/ft_memcmp.c \
+			$(LIBFT_DIR)/ft_memmove.c \
+			$(LIBFT_DIR)/ft_bzero.c \
+			$(LIBFT_DIR)/ft_atoi.c \
+			$(LIBFT_DIR)/ft_strdup.c \
+			$(LIBFT_DIR)/ft_calloc.c \
+			$(LIBFT_DIR)/ft_substr.c \
+			$(LIBFT_DIR)/ft_strjoin.c \
+			$(LIBFT_DIR)/ft_strtrim.c \
+			$(LIBFT_DIR)/ft_split.c \
+			$(LIBFT_DIR)/ft_itoa.c \
+			$(LIBFT_DIR)/ft_strmapi.c \
+			$(LIBFT_DIR)/ft_striteri.c \
+			$(LIBFT_DIR)/ft_putchar_fd.c \
+			$(LIBFT_DIR)/ft_putstr_fd.c \
+			$(LIBFT_DIR)/ft_putendl_fd.c \
+			$(LIBFT_DIR)/ft_putnbr_fd.c \
+			$(LIBFT_DIR)/ft_lstnew.c \
+			$(LIBFT_DIR)/ft_lstadd_front.c \
+			$(LIBFT_DIR)/ft_lstsize.c \
+			$(LIBFT_DIR)/ft_lstlast.c \
+			$(LIBFT_DIR)/ft_lstadd_back.c \
+			$(LIBFT_DIR)/ft_lstdelone.c \
+			$(LIBFT_DIR)/ft_lstclear.c \
+			$(LIBFT_DIR)/ft_lstiter.c \
+			$(LIBFT_DIR)/ft_lstmap.c \
+			$(LIBFT_DIR)/ft_strcmp.c \
+			$(LIBFT_DIR)/ft_isbinary.c \
+			$(LIBFT_DIR)/get_next_line_bonus.c \
+			$(LIBFT_DIR)/ft_printf_utils.c \
+			$(LIBFT_DIR)/ft_printf.c
 			$(LIBFT_DIR)/libft.h
 	@mkdir -p obj/libft
 	@echo ""
