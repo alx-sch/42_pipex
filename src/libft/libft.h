@@ -6,7 +6,7 @@
 /*   By: aschenk <aschenk@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:55:49 by aschenk           #+#    #+#             */
-/*   Updated: 2024/04/05 17:07:27 by aschenk          ###   ########.fr       */
+/*   Updated: 2024/04/05 17:19:36 by aschenk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,13 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		ft_isbinary(char *stash);
 char	*get_next_line(int fd);
 
+// ft_printf()
 int		ft_printf(const char *format, ...);
+// ft_printf(); fcts from ft_printf_utils listed here
+int		print_count_char(char _char);
+int		print_count_string(char *str);
+int		print_count_unsigned(unsigned int nbr);
+int		print_count_number(int nbr);
+int		print_count_hex(uintptr_t nbr, char format);
 
 #endif
