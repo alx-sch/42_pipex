@@ -113,7 +113,7 @@ $(LIBFT):	$(LIBFT_DIR)/ft_isalpha.c \
 			$(LIBFT_DIR)/ft_isbinary.c \
 			$(LIBFT_DIR)/get_next_line_bonus.c \
 			$(LIBFT_DIR)/ft_printf_utils.c \
-			$(LIBFT_DIR)/ft_printf.c
+			$(LIBFT_DIR)/ft_printf.c \
 			$(LIBFT_DIR)/libft.h
 	@mkdir -p obj/libft
 	@echo ""
