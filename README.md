@@ -61,10 +61,18 @@ So, to execute commands with input/output redirection, such as `cmd1 < infile | 
 
 ## Creating and Managing Mutiple Processes
 
-### Fork() & Waitpid()
+### Understanding Fork() & Waitpid()
 Creating a new process is simply done by calling `fork()`, which creates two identical copies of the program's execution environment, with one being the parent (return value of `fork()` > 0) and the other being the child (return value of `fork()` = 0).
 
 Let's look at a simple program using `fork()`:
+
+```
+DISCLAIMER:
+Please note that the following code examples have been selected for relevance of explaining specific system calls,
+they do not directly relate to the pipex project.
+```
+
+</details>
 
 ```C
 // fork.c
