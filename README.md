@@ -1,5 +1,8 @@
 # WIP!! 42_pipex WIP!!
 
+Code: READY AND FINAL!
+README: TBD!
+
 ![Screenshot from 2024-04-21 21-10-07](https://github.com/alx-sch/42_pipex/assets/134595144/350670ec-54ee-4629-94ab-0dcb1dd92a9b)
 
 
