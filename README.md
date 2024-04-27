@@ -313,5 +313,5 @@ Comparison (output shell + output pipex):
 - Let's say you want to count the words in a file and store the results in another, but use the same file as input and output `< infile.txt wc -w | cat > infile.txt`, the result would be file with '0' in it -> The 'outfile' is created first as an empty file (overwriting the actual 'infile') and THEN process are initiated.
 
 #### Parent waits for the last process to finish
-- `< infile.txt | head > outfile.txt` `./pipex infile.txt yes head outfile.txt ` 
+- `< infile.txt yes | head > outfile.txt` `./pipex infile.txt yes head outfile.txt ` 
 
