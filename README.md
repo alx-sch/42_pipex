@@ -7,7 +7,7 @@ README: TBD!
 
 
 <p align="center">
-    <img src="https://github.com/alx-sch/42_pipex/assets/134595144/292c30ab-c530-4977-b4ec-863d889eca6b" alt="born2beroot_badge.png" />
+    <img src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/pipexe.png" alt="pipex_badge.png" />
 </p>
 
 Pipex mimics the functionality of the shell pipe command '` | `' by executing `./pipex infile cmd1 cmd2 outfile`, which emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between commands executed within separate processes.
@@ -100,11 +100,11 @@ int	main(void)
 }
 ```   
  <div style="display: block;">
-	<img width="600" alt="fork_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/8ab2944e-ab9c-4109-831e-7643ac78b17b">   
+	<img width="600" alt="fork_flow" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/fork_dia.png">   
  </div>
 
  <div style="display: block;">
-	<img width="420" alt="fork_prinout" src="https://github.com/alx-sch/42_pipex/assets/134595144/91e40035-99ba-44c2-8e80-6531e6b19f64">  
+	<img width="420" alt="fork_prinout" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/fork_exec.png">  
 </div>
 
 "*Before the fork!*" is printed out once, before `fork()` is called. Then, "*After the fork!*" is printed out twice: Once by the parent process and once by the child process. This is because the `fork()` call creates a new process, resulting in two separate execution paths. In the parent process, it returns the process ID (PID) of the child process (> 0), while in the child process, it returns 0. This makes it possible to execute different tasks by distinguishing between the PIDs (`if (pid == 0)` for child process tasks and `else` for parent process tasks).
@@ -137,11 +137,11 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="710" alt="fork_sleep_flow" src="https://github.com/alx-sch/42_pipex/assets/134595144/819b6dc3-d43c-46e0-846a-0f71edf4bae6">
+<img width="710" alt="fork_sleep_flow" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/usleep_dia.png">
 </div>
 
 <div style="display: block;">
-<img width="500" alt="fork_sleep_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/a6da9d1d-9a0d-45c2-932d-143db67456e1">  
+<img width="500" alt="fork_sleep_printout" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/usleep_exec.png">  
 </div>
 
 #### Introducing waitpid()   
@@ -174,11 +174,11 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="830" alt="fork_waitpid_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/af27ff0b-f249-40d6-886f-cfb8f3d9d6d7">  
+<img width="830" alt="fork_waitpid_diagram" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/waitpid_dia.png">  
 </div>
 
 <div style="display: block;">
-<img width="500" alt="fork_waitpid_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/7ba4e2cb-c024-4b52-ae9a-6d4d90fce39e">  
+<img width="500" alt="fork_waitpid_printout" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/waitpid_exec.png">  
 </div>
 
 ### Pipe()
@@ -219,11 +219,11 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="930" alt="pipe"  src="https://github.com/alx-sch/42_pipex/assets/134595144/9e8cda54-0a04-4fa2-8b6e-d9e2ccbc92fe">
+<img width="930" alt="pipe_diagram"  src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/pipe_dia.png">
 </div>
 
 <div style="display: block;">
-<img width="400" alt="pipe_dup2_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/05015ed0-6c63-480c-a4bc-3860734e0166">
+<img width="400" alt="pipe_printout" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/pipe_exec.png">
 </div>
 
 #### Introducing dup2()
@@ -261,11 +261,11 @@ int	main(void)
 }
 ```
 <div style="display: block;">
-<img width="930" alt="pipe_dup2"  src="https://github.com/alx-sch/42_pipex/assets/134595144/66a75071-7f86-4171-854f-dc23adcfe24b">
+<img width="930" alt="pipe_dup2_flow"  src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/dup2_dia.png">
 </div>
 
 <div style="display: block;">
-<img width="400" alt="pipe_dup2_printout" src="https://github.com/alx-sch/42_pipex/assets/134595144/897f8046-5347-4ab3-9bf0-1ba6b26031b6">
+<img width="400" alt="pipe_dup2_printout" src="https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/dup2_exec.png">
 </div>
 
 ## Pipex vs Shell
@@ -282,37 +282,36 @@ Comparison (output shell + output pipex):
   	- invalid command option
   	- infile not existent & invalid command
     	
-	![Screenshot from 2024-03-15 11-58-13](https://github.com/alx-sch/42_pipex/assets/134595144/adc7bef6-7b0e-43c0-81de-69c66dac90ce)
+	![Screenshot from 2024-03-15 11-58-13](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_1.png)
 
    
 
 	- Note: The color-coded output signals 'success' (blue)! -> left side is handled in a process that does NOT report the EXIT status to the parten.
   	- Note: If multiple invalid comments: Only the file-related issue is addressed, not the invalid command -> process exits after file access fails.
   	- Note: An empty outfile.txt is created ('rw-r--r-- permissions) even if the pipe call failed. 
-	![Screenshot from 2024-03-15 12-05-14](https://github.com/alx-sch/42_pipex/assets/134595144/55bae8f7-b962-491f-86bc-416e8d88535f)
+	![Screenshot from 2024-03-15 12-05-14](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_2.png)
 
  
 #### Invalid Input on Right Side   
 - Same as above for the left side BUT color-coded output signals 'error' (red) -> right side is handled in a process that reports EXIT status to parent
      
-![Screenshot from 2024-03-15 12-14-40](https://github.com/alx-sch/42_pipex/assets/134595144/e65c2b17-c7b5-4b8e-a6fa-527e6a63d1f2)
+![Screenshot from 2024-03-15 12-14-40](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_3.png)
 
 
 #### Invalid Input on Both Sides
-- Same as above, error messages for both sides are printed out -> processes handling each side run paralelly; having one exit does not result in the other process not being executed.   
-  ![Screenshot from 2024-03-21 18-01-18](https://github.com/alx-sch/42_pipex/assets/134595144/bcc7a7cd-c3f1-44e1-b260-ce3f0f896be2)
-
-
+- Same as above, error messages for both sides are printed out -> processes handling each side run parallel; having one exit does not result in the other process not being executed.   
+  ![Screenshot from 2024-03-21 18-01-18](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_4.png)
+  
 
 #### Proccesses run parallely
- ![Screenshot from 2024-03-21 18-04-44](https://github.com/alx-sch/42_pipex/assets/134595144/4714b3ff-dd0a-429b-a8e5-b55797dfd5e9)
- ![Screenshot from 2024-03-21 18-28-43](https://github.com/alx-sch/42_pipex/assets/134595144/90b97a9b-a680-4337-84a6-94b823ca19f2)
+ ![Screenshot from 2024-03-21 18-04-44](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_5.png)
+ ![Screenshot from 2024-03-21 18-28-43](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_6.png)
 
 #### Outfile overwrites Infile
 - Let's say you want to count the words in a file and store the results in another, but use the same file as input and output `< infile.txt wc -w | cat > infile.txt`, the result would be file with '0' in it -> The 'outfile' is created first as an empty file (overwriting the actual 'infile') and THEN process are initiated.
 
 #### Parent waits for the last process to finish
-![Screenshot from 2024-03-21 18-10-38](https://github.com/alx-sch/42_pipex/assets/134595144/076bb83e-27a2-448a-93b5-4a92783c69b3)
+![Screenshot from 2024-03-21 18-10-38](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_7.png)
 
 - `< infile.txt yes | head > outfile.txt` `./pipex infile.txt yes head outfile.txt ` 
 
