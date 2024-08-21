@@ -13,22 +13,22 @@ README: TBD!
 Pipex mimics the functionality of the shell pipe command '` | `' by executing `./pipex infile cmd1 cmd2 outfile`, which emulates the behavior of `< infile cmd1 | cmd2 > outfile`. It facilitates the connection of the standard output of one command to the standard input of another command, creating a pipeline for data flow between commands executed within separate processes.
 
 ## Features
-- **[Command Execution](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#command-execution):** Utilizing the PATH environmental variable to execute commands via `execve()`.
+- **[Command Execution](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#command-execution):** Utilizing the PATH environment variable to execute commands via `execve()`.
 - **[Process Management](https://github.com/alx-sch/42_pipex/tree/main?tab=readme-ov-file#creating-and-managing-mutiple-processes):** Creating child processes and establishing inter-process communication via `fork()`, `waitpid()`, `pipe()`, and `dup2()`.
 - **Error Handling:** Ensuring robustness by implementing mechanisms to protect the program from unexpected behavior and failure, using `perror()`, `strerror()`, and `errno`.
 - **Imitating Shell Behavior:** Replicating the behavior of the shell as closely as possible (zsh).
 
 ## Command Execution
 
-#### The PATH Environmental Variable
+#### The PATH Environment Variable
 
-Environmental variables are essential elements of the operating system's environment. They store information that various processes and applications utilize to configure their behavior and access system resources.
+Environment variables are essential elements of the operating system's environment. They store information that various processes and applications utilize to configure their behavior and access system resources.
 
 For example, common commands such as 'grep', 'ls', or 'cat' are exectuable files stored within the system. To determine the exact path(s) to a specific command, you can use `which` in bash or `where` in zsh, followed by the command name, such as `which grep` or `which ls`. 
 
 When calling a command, the terminal shell checks the PATH environment variable. This variable contains a list of directories, delimited by colons, where the operating system searches to find the executable file corresponding to the given command.
 
-To view a list of all environmental variables and their values, you can execute the `env` command in the terminal. This command displays a list like this (excerpt):
+To view a list of all environment variables and their values, you can execute the `env` command in the terminal. This command displays a list like this (excerpt):
 
 ```bash
 [...]
@@ -39,7 +39,7 @@ SHELL=/bin/zsh
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
 
-In a C program, you can access the list of environmental variables by including `char **envp` as the third argument to the main function, e.g. `int main(int argc, char **argv, char **envp)`. The envp parameter is structured as an array of strings in the format "VARIABLE=value", for example `envp = {"LANGUAGE=en", "PATH=/usr/local/sbin:[...]", "[...]", NULL}`.
+In a C program, you can access the list of environment variables by including `char **envp` as the third argument to the main function, e.g. `int main(int argc, char **argv, char **envp)`. The envp parameter is structured as an array of strings in the format "VARIABLE=value", for example `envp = {"LANGUAGE=en", "PATH=/usr/local/sbin:[...]", "[...]", NULL}`.
 
 To understand how Pipex retrieves the path to a specified command, please refer to the `get_command_path()` function [here](https://github.com/alx-sch/42_pipex/blob/main/src/call_cmd.c).
 
@@ -56,7 +56,7 @@ int execve(const char *path, char **const argv, char **const envp)
 ```
 - const char \*path: Represents the path to the command executable, e.g. `/usr/bin/ls`.
 - char \*\*const argv: Represents the command arguments in a NULL-terminated char array, e.g. `{"ls", "-l", NULL}`.
-- char \*\*const envp: Represents the list of environmental variables.
+- char \*\*const envp: Represents the list of environment variables.
 
 Members of the `exec()` family behave uniquely by loading and executing a new program (the command), effectively replacing the current process when called. They do not return to the original process after successful execution. This means that once `execve()` is called successfully (not returning -1), any following code is not executed.
 
