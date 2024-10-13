@@ -313,5 +313,8 @@ Comparison (output shell + output pipex):
 #### Parent waits for the last process to finish
 ![Screenshot from 2024-03-21 18-10-38](https://raw.githubusercontent.com/alx-sch/42_pipex/main/.assets/comp_7.png)
 
-- `< infile.txt yes | head > outfile.txt` `./pipex infile.txt yes head outfile.txt ` 
+- `< infile.txt yes | head > outfile.txt` `./pipex infile.txt yes head outfile.txt `
+
+## Acknowledgements
+The project badge used is retrieved from [this repo](https://github.com/ayogun/42-project-badges) by Ali Ogun.
 
