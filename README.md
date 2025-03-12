@@ -316,5 +316,5 @@ Comparison (output shell + output pipex):
 - `< infile.txt yes | head > outfile.txt` `./pipex infile.txt yes head outfile.txt `
 
 ## Acknowledgements
-The project badge used is retrieved from [this repo](https://github.com/ayogun/42-project-badges) by Ali Ogun.
+The project badge is from [this repository](https://github.com/ayogun/42-project-badges) by Ali Ogun.
 
